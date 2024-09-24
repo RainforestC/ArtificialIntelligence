@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<title>Uncertainty</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>search</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="./css/Romania.css">
+  <link rel="stylesheet" href="./css/demo2.css">
+  <link rel="stylesheet" href="./css/demo7.css">
+  <link rel="stylesheet" href="./css/demo8.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>  
+  <script src="./js/DFS_BFS.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+  <a href="./index.html"><h3 class="w3-bar-item">Artificial Intelligence</h3></a>
+  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">Agents and environments</a>
+  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">Uninformed Search</a>
+  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">Informed Search</a>
+  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
+  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
+  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
+  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
+  <ul>
+    <li><a href="#title-8-1" class="w3-bar-item w3-button">Markov Decision Process</a></li>
+    <li><a href="#title-8-2" class="w3-bar-item w3-button">Example: Grid World</a></li>
+    <li><a href="#title-8-3"class="w3-bar-item w3-button">Policies</a></li>
+    <li><a href="#title-8-4" class="w3-bar-item w3-button">Example: Racing MDP</a></li>
+    <li><a href="#title-8-5" class="w3-bar-item w3-button">Utilities</a></li>
+    <li><a href="#title-8-6" class="w3-bar-item w3-button">Solving: MDPs</a></li>
+    <li><a href="#title-8-7" class="w3-bar-item w3-button">Value Iteration</a></li>
+    <li><a href="#title-8-8" class="w3-bar-item w3-button">Policy Extraction</a></li>
+    <li><a href="#title-8-9" class="w3-bar-item w3-button">Policy Iteration</a></li>
+    <li><a href="#title-8-10" class="w3-bar-item w3-button">Comparison</a></li>
+  </ul>
+</div>
+
+
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-8-1">Markov Decision Process</h1>
+    </div>
+    <font size="5">
+        <p>MDP : the way of formalizing the idea of non-deterministic search which is search when your actions outcomes are uncertain.</p>
+        <ul>
+            <li>An MDP is defined by:</li><img src="./image/8-3.png", alt=""  style="float:right; width:25%;">
+            <ul>
+                <li>A set of states s ∈ S</li>
+                <li>A set of actions a ∈ A</li>
+                <li>A transition function T(s, a, s’)</li>
+                <ul>
+                    <li>Probability that a from s leads to s’, i.e., P(s’| s, a)</li>
+                    <li>Also called the model or the dynamics</li>
+                </ul>
+                <li>A reward function R(s, a, s’)</li>
+                <ul><li>Sometimes just R(s) or R(s’)</li></ul>
+                <li>A start state</li>
+                <li>Maybe a terminal state</li>
+            </ul>
+        </ul>
+    </font>
+    <h2 style="position: relative;">
+        <font size="5">What is Markov about MDPs?</font> 
+    </h2>
+    <ul>
+        <font size="5">
+            <li>“Markov” generally means that given the present state, the future and the past are independent</li>
+            <li>For Markov decision processes, “Markov” means action outcomes depend only on the current state:
+                P(St+1 = s' | St=st,At=at,St-1=st-1,At-1=at-1,..., S₀=s₀) = P(St+1 = s' | St=st,At=at)</li>
+            <li>This is just like search,the probability distribution over your outcomes depends only on the current state and action , not on the whole histroy of how you got there.</li>
+        </font>
+
+    </ul>
+    <font size="5">
+        <p>So this is important property in MDP is to make sure that you define your transition function and your state in such a way that the transition probabilities depend only on the current state and action.</p>
+
+    </font>
+</div>
+
+
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-8-2">Example: Grid World</h1>
+    </div>
+    <ul>
+        <font size="5">
+        <p style="color: blue;">A maze-like problem</p>
+        <li>The agent lives in a grid</li>
+        <li>Walls block the agent’s path</li>
+        <br><img src="./image/8-4.png", alt=""  style="float:right; width:35%;">
+        <p style="color: blue;">Noisy movement: actions do not always go as planned</p>
+        <li>80% of the time, the action North takes the agent North (if there is no wall there)</li>
+        <li>10% of the time, North takes the agent West; 10% East</li>
+        <li>If there is a wall in the direction the agent would have been taken, the agent stays put</li>
+        <li>similar rules for the other 3 directions</li>
+        <br>
+        <p style="color: blue;">The agent receives rewards</p>
+        <li>Small “living” reward each step (can be negative).this is sometimes called a living reward or a living penalty based on whether it's positive or negative.</li>
+        <li>Big rewards come at the end (good or bad).terminal utilities, shown as the plus 1 and minus 1(also the exit to game end).</li>
+        <br>
+        <p style="color: blue;">Goal: maximize sum of rewards</p>
+        </font>
+    </ul>
+</div>
+
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-8-3">Policies</h1>
+    </div>
+    <font size="5">
+        <p>For MDPs, we want an optimal policy π* : S → A</p>
+
+        <ul>
+        <li>A policy π gives an action for each state, like a recommendation action</li>
+        <li>An optimal policy is one that maximizes expected utility if followed</li>
+        <li>An explicit policy defines a reflex agent</li>
+    </ul>
+    </font>
+</div>
+
+<div style="margin-left:15%">
+<div class="w3-container w3-teal">
+    <h1 id="title-8-4">Example: Racing MDP</h1>
+  </div>
+  
+  <div class="w3-container">
+    <img src="./image/8-5.png" alt="" style="width:70%;position: relative; left: 280px;">
+    <font size="5">
+        <p>Definition:</p>
+        <ul>
+            <li>A robot car wants to travel far, quickly</li>
+            <li>Three states: <font color="#00B0F0">Cool</font>, <font color="#7E2727">Warm</font>, Overheated</li>
+            <li>Two actions: <font color="#333399">Slow</font>, <font color="#C00000">Fast</font></li>
+             <li>Going faster gets double reward</li>
+        </ul>
+        <p>Any MDP is defining a search tree. So if you're in some particular state , for example if you're in the state where the car is cool, you have 2 actions: slow or fast.        </p>
+        </font>
+        <img src="./image/MDP_Search_Tree.gif" alt="" style="width:70%;position: relative; left: 280px;">
+        <font size="5">
+            <p>Each MDP state projects an expectimax-like search tree.</p>
+            <img src="./image/8-7.png" alt="" style="width:70%;position: relative; left: 280px;">
+
+            <p>But we’re doing way too much work with expectimax! The problems are:</p>
+            <ul>
+                <li>States are repeated</li>
+                <!-- <font style="color:blue">Idea: Only compute needed quantities once</font> -->
+                <li>Tree goes on forever</li>
+                <!-- <font style="color:blue">Idea: Do a depth-limited computation, but with increasing depths until change is small</font> -->
+            </ul>
+            <p>To Solve these problems, Let's learn about utilities first.</p>
+        </font>
+    </div>
+</div>
+
+<div style="margin-left:15%">
+        <div class="w3-container w3-teal">
+            <h1 id="title-8-5">Utilities</h1>
+        </div>
+        <font size="5">
+            <p>Principle of maximum expected utility: A rational agent should chose the action that <span class="red-text" >maximizes its expected utility, given its knowledge</span>.</p>
+            <p>The purpose of utilities is:</p><img src="./image/8-1.png", alt=""  style="float:right; width:40%;">
+            <ul>
+                <li>For worst-case minimax reasoning, terminal function scale doesn’t matter</li>
+                <ul>
+                    <li>We just want better states to have higher evaluations (get the ordering right)</li>
+                    <li>We call this insensitivity to monotonic transformations</li>
+                </ul>
+                <li>For average-case expectimax reasoning, we need magnitudes to be meaningful</li>
+            </ul>
+            <p style="color:red">Utilities are functions from outcomes (states of the world) to real numbers that describe an agent’s preferences.</p>
+        </font>  
+        <img src="./image/8-2.png", alt=""  style="float:right; width:40%;">
+    
+        <font size="5">
+        <p>Where do utilities come from?</p>
+        <ul>
+            <li>In a game, may be simple (+1/-1)</li>
+            <li>Utilities summarize the agent’s goals</li>
+            <li>Theorem: any “rational” preferences can be summarized as a utility function</li>
+        </ul>
+        <p>We hard-wire utilities and let behaviors emerge.</p>
+        <ul>
+            <li>Why don’t we let agents pick utilities?</li>
+            <ul>
+                <li>vacuum cleaner example: the agent would like to do nothing ,and so easy to do nothing.</li>
+            </ul>
+        </ul>
+        <ul>
+            <li>Why don’t we prescribe behaviors?</li>
+            <ul>
+                <li>it's very hard to write down , complicated and context-defpendent.</li>
+            </ul>
+        </ul>
+        <p>In a MDP the rewards come to you step-by-step , we need to figure out what our utility function acutally is. In the simplest case you just add up the rewards but it can be little more subtle than that.</p>
+        <p>What preferences should an agent have over reward sequences? More or less? Now or later?</p>
+        <p>We use <span style="color:blue">discount</span> to express preferences over reward sequences.</p>
+        </font>
+    </div>
+    
+<div style="margin-left:15%">
+        <div class="w3-container w3-teal">
+            <script src="./js/discount.js"></script>
+            <h1 id="title-8-5">Discounting</h1>
+        </div>
+        <font size="5">
+            <p>It’s reasonable to maximize the sum of rewards. And it’s also reasonable to prefer rewards now to rewards later. So the solution is: <span style="color:blue">values of rewards decay exponentially</span> .</p>
+        <img src="./image/8-8.png" alt="" style="width:50%;position: relative; left: 280px;">
+        
+        <p>How to discount?</p>
+        
+        <ul>
+            Each time we descend a level, we multiply in the discount once</ul>
+        <p>Why discount?</p>
+        <ul>
+            <li>Sooner rewards probably do have higher utility than later rewards</li>
+            <li>Also helps our algorithms converge</li>
+        </ul>
+    </font>
+    
+    <font size="5">
+    <p>If the agent liked A better than B now, it should like it better shifted into the future as well and vice versa.</p>
+    <ul>
+        <li>Theorem: if we assume stationary preferences:</li>
+        <ul><li>a₁,a₂,...] ≻ [b₁,b₂,...] <=> [r, a₁,a₂,...] ≻ [r, b₁,b₂,...]</li></ul>
+        <li>Then: there are only two ways to define utilities</li>
+        <ul>
+            <li>Additive utility: U( [r₀,r₁,r₂,...] ) = r₀ + r₁ + r₂ + ...</li>
+            <li>Discounted utility: U( [r₀,r₁,r₂,...] ) = r₀ + γ·r₁ + γ²·r₂ + ...</li>
+        </ul>
+    </ul>
+    <h2 style="position: relative;">
+        <font size="6">Try a game to compute discounted utility:</font> 
+    </h2>
+    <font size="5">
+        <p>Discount: <span id="discount"></span></p>
+    <p>Sequence: <span id="sequence"></span></p>
+    <input type="text" id="userAnswer" placeholder="Please keep 2 decimal places" class="long-input"> 
+    <br>
+    <button onclick="checkAnswer()">submit</button>
+
+    <button onclick="calculateResult()">generate new discount & sequence</button>
+    <br>
+    <br>
+    </font>
+    
+    <p style="color:blue"> What if the game lasts forever? Do we get infinite rewards?</p>
+    <p>SOLUTIONS:</p><img src="./image/8-9.png", alt=""  style="float:right; width:30%;">
+    <ul>
+        <li>Finite horizon: (similar to depth-limited search)</li>
+        <ul>
+            <li>Terminate episodes after a fixed T steps (e.g. life)</li>
+            <li>Gives nonstationary policies ( π depends on time left)</li>
+        </ul>
+        <li>Discounting: use 0 < γ < 1</li>
+        <ul>
+            <li>U( [r₀,r₁,r₂,...] ) = r₀ + γ·r₁ + γ²·r₂ + ... <= Rmax/(1-γ)</li>
+            <li>Smaller γ means smaller “horizon” – shorter term focus</li>
+        </ul>
+        <li>Absorbing state: guarantee that for every policy, a terminal state will eventually be reached (like “overheated” for racing)</li>
+    </ul>
+    </font>
+</div>    
+
+
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-8-6">Solving: MDPs</h1>
+    </div>
+    <font size="5">
+        <p>In "Example: Racing MDP", We have put forward two problems, and now we can give the idea to solve:</p>
+        <ul>
+            <li>States are repeated</li>
+            <ul><li>Idea: Only compute needed quantities once</li></ul>
+            <li>Tree goes on forever</li>
+            <ul>
+                <li>Idea: Do a depth-limited computation, but with increasing depths until change is small</li>
+                <li>Note: deep parts of the tree eventually don’t matter if γ < 1</li>
+            </ul>
+        </ul>
+        <font style="color:blue">Optimal Quantities</font>
+        <ul><img src="./image/8-10.png", alt=""  style="float:right; width:20%;">
+            <li>The utility (value) of a state s:</li>
+            <ul>
+                <li>V*(s) = expected utility starting in s and acting optimally</li>
+                <li>what the star means is this is the value under optimal action</li>
+            </ul>
+            <li>The value (utility) of a q-state (s,a):</li>
+            <ul>
+                <li>Q*(s,a) = expected utility starting out having taken action a from state s and (thereafter) acting optimally</li>
+                <li>Each action do have a Q-value</li>
+            </ul>
+            <li>The optimal policy:</li>
+            <ul><li>π*(s) = optimal action from state s</li></ul>
+        </ul>
+        <p>Therefore, recursive definition of value (The Bellman Equation):</p>
+        <img src="./image/8-11.png",alt="" style="width:30%;" class="alone-img">
+        <br>
+    </font>
+    
+</div>
+
+<div style="margin-left:15%">
+    <font size="5">
+    <p>If we can determine a value V (s) for each state s ∈ S so that the Bellman equation can calculate accurately for each of these states, we can conclude that these values are optimal for their respective states.</p>
+</font>
+    <div class="w3-container w3-teal">
+        <h1 id="title-8-7">Value Iteration</h1>
+    </div>
+    <font size="5">
+        <p>Now that we have a framework that can verify the optimality of the values of various states in the MDP, we naturally want to know how to accurately calculate these optimal values. For this reason, we need a <span style="color:blue">time-limited values</span>.</p>
+        <ul>
+            <li>Define <img src="./image/8-12.png", alt=""  style="width:3%;"> to be the optimal value of s if the game ends in k more time steps</li>
+            <li>Equivalently, it’s what a depth-k expectimax would give from s
+                </li>
+        </ul>
+        <p>Value iteration is a dynamic programming algorithm, which calculates the time limit value through an extended time limit of iteration until convergence.</p>
+        <ul>
+            <li>Start with <img src="./image/8-13.png", alt=""  style="width:3%;"> = 0: no time steps left means an expected reward sum of zero</li>
+            <li>Given vector of Vk(s) values, do one ply of expectimax from each state:</li>
+            <img src="./image/8-14.png",alt="" style="width:40%;" class="alone-img">
+            <li>Repeat until convergence, which yields V*</li>
+            <li>Complexity of each iteration: O(S²A)</li>
+            <li>Theorem: will converge to unique optimal values</li>
+            <ul>
+                <li>Basic idea: approximations get refined towards optimal values</li>
+                <li>Policy may converge long before values do</li>
+            </ul>
+        </ul>
+    </font>
+    <h2>
+        <font size="6">
+            Example: Value Iteration
+        </font>
+     </h2>   
+        <img src="./image/8-15.png" alt="" style="float:left;width:50%;">
+        <img src="./image/racing_value_iteration.gif" alt="" style="position: relative;left: 120px;;width: 25%;">
+    <br>
+    <br>
+    <br>
+</div>
+
+<div style="margin-left: 15%;">
+    <div class="w3-container w3-teal">
+        <h1 id="title-8-8">Policy Extraction</h1>
+    </div>
+    <font size="5">
+        <p>Policy extraction allows us to determine which action to take given expected values for each state V(s).</p>
+        <p>If we are in a state s, we should take action a that will produce the maximum expected benefits. In other words, We need to run a one-step expectimax and find the action that corresponds to the given value.</p>
+    </font>
+    <h2>
+        <font size="5">Computing Actions from Values</font>
+    </h2>
+    <font size="5">
+        <p>Given the optimal values for each state V*(s), we can extract the optimal policy by doing the following:</p>
+        <img src="./image/8-16.png",alt="" style="width:40%;" class="alone-img">
+        <p>This is only a depth one expectimax because the values V*(s') are all already known so no further recursion needs to be done.</p>
+    </font>
+    <h2>
+        <font size="5">Computing Actions from Q-Values</font>
+    </h2>
+    <font size="5">
+        <p>Given the q values for each state action pair Q*(s,a), we can extract the optimal policy by doing the following:</p>
+        <img src="./image/8-17.png",alt="" style="width:20%;" class="alone-img">
+        <font style="color:blue"><p>Important lesson: actions are easier to select from q-values than values!</p>
+        </font>
+    </font>
+</div>
+
+<div style="margin-left: 15%;">
+    <div class="w3-container w3-teal">
+        <h1 id="title-8-9">Policy Iteration</h1>
+    </div>
+    <font size="5"><img src="./image/8-23.png", alt=""  style="float:right; width:40%;">
+        <p>Value iteration repeats the bellman updates. You have iteractions where K gets larger and larger starting at 0. For each iteration you visit each state and for each state you look at each action and for each action you look at each outcome. It's not always the best solution.</p>
+        <ul>
+            <li>Problem 1: It’s slow – O(S²A) per iteration</li>
+            <li>Problem 2: The “max” at each state rarely changes</li>
+            <li>Problem 3: The policy often converges long before the values</li>
+        </ul>
+        <p>Alternative approach for optimal values<span style="color:red">(policy iteration)</span>:</p>
+        <p>Step 1: Policy Evaluation: calculate utilities for some fixed policy (not optimal utilities!) until convergence</p>
+        <P>Step 2: Policy Improvement: update policy using one-step look-ahead with resulting converged (but not optimal!) utilities as future values</P>
+        <p>Repeat steps until policy converges.</p>
+    </font>
+    <h2>
+        <font size="5">Policy Evaluation</font>
+    </h2>
+    <font size="5">
+        <p>Policy evaluation is an evaluation of the expected reward of a policy.</p>
+        <p>Policy evaluation can be characterised as <img src="./image/8-18.png", alt=""  style="width:3%;"> as defined by the following equation:</p>
+        <img src="./image/8-19.png",alt="" style="width:30%;" class="alone-img">
+        <p>where <img src="./image/8-18.png", alt=""  style="width:3%;"> = 0 for terminal states.</p>
+        <p>Note that this is very similar to the Bellman equation, except <img src="./image/8-18.png", alt=""  style="width:3%;"> is not the value of the best action, but instead just as the value for π(s), the action that would be chosen in s by the policy π. </p>
+    </font>
+    <h2>
+        <font size="5">Policy Improvement</font>
+    </h2>
+    <font size="5">
+        <p>If we have a policy and we want to improve it, we can use policy improvement to change the policy (that is, change the actions recommended for states) by updating the actions it recommends based on V(s) that we receive from the policy evaluation.</p>
+        <p>We take one step look-ahead:</p>
+        <img src="./image/8-20.png",alt="" style="width:30%;" class="alone-img">
+        <p>When <img src="./image/8-21.png", alt=""  style="width:7%;">, the algorithm converges successfully, we can get <img src="./image/8-22.png", alt=""  style="width:9%;">.</p>
+    </font>
+</div>
+
+<div style="margin-left: 15%;">
+    <div class="w3-container w3-teal">
+        <h1 id="title-8-10">Comparison</h1>
+    </div>
+    <font size="5">
+        <ul>
+            <li>Both value iteration and policy iteration compute the same thing (all optimal values)</li>
+            <li>In value iteration:</li>
+            <ul>
+                <li>Every iteration updates both the values and (implicitly) the policy</li>
+                <li>We don’t track the policy, but taking the max over actions implicitly recomputes it</li>
+            </ul>
+            <li>In policy iteration:</li>
+            <ul>
+                <li>We do several passes that update utilities with fixed policy (each pass is fast because we consider only one action, not all of them)</li>
+                <li>After the policy is evaluated, a new policy is chosen (slow like a value iteration pass)</li>
+                <li>The new policy will be better (or we’re done)</li>
+            </ul>
+            <li>Both are dynamic programs for solving MDPs</li>
+            <li>Why would you ever do value iteration ?</li>
+            <ul>It's simpler and in cases where there are a small number of actions you might do it.</ul>
+
+        </ul>
+    </font>

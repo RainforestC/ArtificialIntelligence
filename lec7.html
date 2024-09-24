@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<title>Uncertainty</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>search</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="./css/Romania.css">
+  <link rel="stylesheet" href="./css/demo2.css">
+  <link rel="stylesheet" href="./css/demo7.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>  
+  <script src="./js/DFS_BFS.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+  <a href="./index.html"><h3 class="w3-bar-item">Artificial Intelligence</h3></a>
+  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">Agents and environments</a>
+  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">Uninformed Search</a>
+  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">Informed Search</a>
+  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
+  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
+  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
+  <ul>
+    <li><a href="#title-7-1" class="w3-bar-item w3-button">Uncertain Outcomes</a></li>
+    <li><a href="#title-7-2" class="w3-bar-item w3-button">Expectimax Search</a></li>
+  </ul>
+  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
+</div>
+
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-7-1">Uncertain Outcomes</h1>
+    </div>
+    <font size="5">
+        <p style="color: blue;">Why wouldn’t we know what the result of an action will be?</p>
+        <img src="./image/7-1.png" alt="" style="float:right;width:25%;">
+    </font>
+    <ul>
+        <font size="5">
+            <li>Explicit randomness: rolling dice</li>
+            <li>Unpredictable opponents: the ghosts respond randomly</li> 
+            <li>Actions can fail: when moving a robot, wheels might slip</li>
+        </font>
+      </ul>
+      <font size="5">
+        <p>Idea: Uncertain outcomes controlled by chance, not an adversary!</p>
+        <p>In the actual operation process, the opponent is not always able to make the best decision, and there will be some probability of mistakes. Therefore we should calculate the average score.</p>
+        
+      </font>
+</div>
+
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-7-2">Expectimax Search</h1>
+    </div>
+    <font size="5">
+        <p>The opponent may not be smart enough to get the optimal solution. Therefore, we regard the opponent node as a chance node, which has a certain probability to implement a certain strategy. At this time, the strategy is to maximize the expected utility. </p>
+        <p> <span class="red-text">So values should now reflect average-case (expectimax) outcomes, not worst-case (minimax) outcomes.</span></p>
+        
+    </font>
+    <ul>
+        <font size="5">
+            <li>Max nodes as in minimax search</li>
+            <li>Chance nodes are like min nodes but the outcome is uncertain</li>
+            <li>Calculate their expected utilities</li>
+            <li>I.e. take weighted average (expectation) of children</li>
+        </font>
+      </ul>
+      <font size="5">
+        <p>The search tree of stochastic games has an additional node type: the chance nodes. A chance node u represents a probability distribution over the set of moves available to the player whose node is the parent of u. Instead of the minimax values, the nodes have the expectimax values. They’re the same as the minimax values for MIN and MAX nodes, but for a chance node, the expectimax value is the expected value of its children.</p>
+      </font>
+      <font size="3"><pre style="margin-left: -0.3in"><img src="" alt="" style="float:right;width:20%;">
+        <font color="#800080">    def value(state):</font>
+        <font color="#000000">    if the state is a terminal state: return the state's utility</font>
+        <font color="#000000">    if the next agent is</font> <font color="#0000ff">MAX</font>: return <font color="#0000ff">max-value(state)</font>
+        <font color="#000000">    if the next agent is</font> <font color="#008800">EXP</font>: return <font color="#008800">exp-value(state)</font>
+      </font>
+
+      <font size="3"><pre style="margin-left: 0in"><img src="./image/7-2.png" alt="" style="float:right;width:30%;">
+        <font color="#0000ff">    def max-value(state):</font>
+        <font color="#000000">    initialize v=-∞</font>
+        <font color="#000000">    for each successor of state:</font>
+        <font color="#000000">        v = max(v, </font><font color="#800080">value(successor)</font>)
+        <font color="#000000">    return v</font>
+      </font>
+
+      <font size="3"><pre style="margin-left: 0in"><img src="" alt="" style="float:right;width:20%;">
+        <font color="#008800">    def exp-value(state):</font>
+        <font color="#000000">    initialize v=0</font>
+        <font color="#000000">    for each successor of state:</font>
+        <font color="#000000">        p = probability(successor)</font>
+        <font color="#000000">        v += p * </font><font color="#800080">value(successor)</font>
+        <font color="#000000">    return v</font>
+      </font>
+</div>
+<div style="margin-left:15%">
+    <font size="5">
+      <p style="color:blue;">Expectimax can not apply pruning.</p>
+  </font>
+      <font size="5"><img src="./image/7-3.png" alt="" style="float:right;width:20%;">
+        <p>In expectimax search, we have a probabilistic model of how the opponent (or environment) will behave in any state</p>
+    </font>
+    <ul>
+        <font size="5">
+            <li>Model could be a simple uniform distribution (roll a die)</li>
+            <li>Model could be sophisticated and require a great deal of computation</li>
+            <li>We have a chance node for any outcome out of our control: opponent or environment</li>
+            <li>The model might say that adversarial actions are likely!</li>
+        </font>
+      </ul>
+      <font size="5">
+        <p>For now, assume each chance node magically comes along with probabilities that specify the distribution over its outcomes.</p>
+        <p>One important thing to remember is that just because we assign probabilities that reflect our believes to the outcome , does not mean that the thing on the other side of flipping a coin.</p>
+        <p>If I think there is a 20% chance that the ghost go to left , it doesn't mean that the ghost has a random number generator. It just means that given my model which may be a simplification that's the best i can say given my evidence.</p>
+      </font>
+
+      <h2 style="position: relative;">
+        <font size="6">Video of Demo World Assumptions Random Ghost – Expectimax Pacman</font> 
+        </h2>
+        <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+          <source src="./video/video-7-1.mp4" type="video/mp4"></source>
+        </video>
+        <br>
+        <h2 style="position: relative;">
+          <font size="6">Video of Demo World Assumptions Adversarial Ghost – Expectimax Pacman</font> 
+        </h2>
+        <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+          <source src="./video/video-7-2.mp4" type="video/mp4"></source>
+        </video>
+
+</div>

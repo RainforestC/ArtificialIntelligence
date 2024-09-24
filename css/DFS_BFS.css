@@ -1,0 +1,49 @@
+
+.header{
+    height: 150px;
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-size: 70px;
+    text-align: center;
+    padding-top: 50px;
+    margin-bottom: 20px;
+    
+}
+
+.main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.graph{
+    flex: 50%;
+}
+
+.options {
+    flex: 50%;
+}
+
+img {
+    width: 100%;
+}
+
+.path{
+    border: 5px solid cadetblue;
+    width: 100%;
+    height: 100px;
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+}
+
+.path div{
+    border: 2px solid black;
+    text-align: center;
+    font-size: 50px;
+}
+.first{
+    background-color: greenyellow;
+}
+.controls{
+    margin-top: 20px;
+}

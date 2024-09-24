@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<title>Local search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local search</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="./css/Romania.css">
+  <link rel="stylesheet" href="./css/DFS_BFS.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>  
+  <script src="./js/DFS_BFS.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+  <a href="./index.html"><h3 class="w3-bar-item">Artificial Intelligence</h3></a>
+  <a href="./index copy.html" class="w3-bar-item w3-button w3-large">Agents and environments</a> 
+  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">Uninformed Search</a>
+  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">Informed Search</a>
+  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
+  <ul>
+    <li><a href="#title-1-1" class="w3-bar-item w3-button">Hill Climbing</a></li>
+    <li><a href="#title-1-2" class="w3-bar-item w3-button">Simulated annealing</a></li>
+    <li><a href="#title-1-3"class="w3-bar-item w3-button">Local beam search</a></li>
+    <li><a href="#title-1-4" class="w3-bar-item w3-button">Local search in continuous spaces</a></li>
+    <li><a href="#title-1-5" class="w3-bar-item w3-button">Summary</a></li>
+  </ul>
+  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
+  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
+  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
+</div>
+
+<!-- Page Content -->
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+      <h1>Local search Algorithms</h1></div>
+      <div class="w3-container">
+        <font size="5">
+      <ul>
+        <li>In many optimization problems, path is irrelevant; the goal state is the solution </li>
+        <li>Then state space = set of “complete” configurations;find configuration satisfying constraints, e.g., n-queens problem; or, find optimal configuration, e.g., travelling salesperson problem </li>
+        <li>Then state space = set of “complete” configurations;find configuration satisfying constraints, e.g., n-queens problem; or, find optimal configuration, e.g., travelling salesperson problem </li>
+        <img src="./image/lec5-2.png" alt="" style="width:20%;position: relative; left: 80px;">
+        <img src="./image/lec5-3.png" alt="" style="width:20%;position: relative; left: 280px;">
+        <li>In such cases, can use iterative improvement algorithms: keep a single “current” state, try to improve it</li>
+        <li>Constant space, suitable for online as well as offline search</li>
+        <li>More or less unavoidable if the “state” is yourself (i.e., learning)</li> 
+      </ul>          
+        </font>
+
+    <div class="w3-container w3-teal">
+      <h1 id="title-1-1">Hill Climbing</h1>
+    </div>
+    <div class="w3-container"> 
+      <img src="./image/lec5-10.png" alt="" style="width:50%;position: relative; left: 280px;">
+    <font size="5">
+      <p>Simple, general idea:</p>
+      <ul>
+        <font size="5">
+        <li>Start wherever</li>
+        <li>Repeat: move to the best neighboring state</li>
+        <li>Are pocket calculators agents?</li>
+        <li>If no neighbors better than current, quit</li>
+        <br>
+        </font>
+    </ul>
+    <h2 style="position: relative;">
+      <font size="6">Heuristic for n-queens problem</font>
+    </h2>
+      <ul>
+        <font size="5">
+        <li>Goal: n queens on board with no conflicts, i.e., no queen attacking another</li>
+        <li>States: n queens on board, one per column</li>
+        <li>Heuristic value function: number of conflicts</li>
+        <br>
+        </font>
+      </ul> 
+    <h2 style="position: relative;">
+      <font size="6">Hill-climbing algorithm</font> 
+      <br>
+      <p>Try using python code</p>
+      <div>
+        <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
+      </div>
+    </h2>
+    <h2 style="position: relative;">
+      <font size="6">Global and local maxima</font> 
+      <br>
+      <br>
+      <img src="./image/lec5-5.png" alt="" style="width:50%;position: relative; left: 280px;">
+    </h2>
+    <font size="5">
+      <p>Random restarts</p>
+      <ul>
+        <li>find global optimum</li>
+        <li>duh:only remember the current state</li>
+      </ul>
+      <p>Random sideways moves</p>
+      <ul>
+        <li>Escape from shoulders</li>
+        <li>Loop forever on flat local maxima</li>
+      </ul>
+    </font>        
+    <h2 style="position: relative;">
+      <br>
+      <font size="6">Try on 8-queens problem</font>
+      <div>
+        <iframe src="./n-queens/index.html" style="width:100%; height:600px;"></iframe>
+      </div>
+    </h2>
+  </font>
+    
+    </div>    
+<div class="w3-container w3-teal">
+
+  <h1 id="title-1-2">Simulated annealing</h1>
+</div>
+<div class="w3-container"> 
+<font size="5">
+  <p>Resembles the annealing process used to cool metals slowly to reach an ordered (low-energy) state
+  </p>
+  <p>Basic idea:</p>
+  <ul>
+    <font size="5">
+      <li>Allow “bad” moves occasionally, depending on “temperature”</li>
+      <li>High temperature => more bad moves allowed, shake the system out of its local minimum</li>
+      <li>Gradually reduce temperature according to some schedule</li>
+      <li>Sounds pretty flaky, doesn’t it?</li>
+      <br>
+    </font>
+</ul>
+<h2 style="position: relative;">
+  <font size="6">Simulated annealing algorithm</font> 
+  <br>
+  <p>Try using python code</p>
+  <div>
+    <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
+  </div>
+</h2>
+<h2 style="position: relative;">
+  <font size="6">Simulated Annealing</font> </h2>
+  <p>Theoretical guarantee:
+  </p>
+  
+  <ul>
+    <font size="5">
+      <li>Stationary distribution (Boltzmann):</li>
+      <li>If T decreased slowly enough, will converge to optimal state!</li>
+      <br>
+    </font>
+  <p>Proof sketch (for reversible case: x→y iff y→x):</p>
+  <ul>
+    <font size="5">
+      <li>Let P(x), P(y) be the equilibrium occupancy probabilities at T
+      </li>
+      <li>Let P(x→y) be the probability that state x transitions to state y
+      </li>
+      <li>Assume E(y) > E(x) [and the algorithm seeks high values of E</li>
+      <br>
+    </font>    
+  </ul>
+  <p>Simulated annealing and its relatives are a key workhorse in VLSI layout and other optimal configuration problems.</p>
+
+</font>
+
+</div> 
+<div class="w3-container w3-teal">
+  <h1 id="title-1-3">Local beam search</h1>
+</div>    
+<br>
+<div class="w3-container"> 
+  <font size="5">
+    <p>Basic idea:</p>
+    <ul>
+      <font size="5">
+        <li>K copies of a local search algorithm, initialized randomly
+        </li>
+        <li>For each iteration:Generate ALL successors from K current states, Choose best K of these to be the new current states</li>
+        <br>
+      </font>
+    </ul>
+    <p>Why is this different from K local searches in parallel?</p>
+    <ul>
+      <font size="5">
+        <li>The searches communicate! “Come over here, the grass is greener!”
+        </li>
+      </font> 
+    </ul>
+    <p>What other well-known algorithm does this remind you of?</p>
+    <ul>
+      <font size="5">
+        <li>Evolution!</li>
+      </font> 
+    </ul>
+  <h2 style="position: relative;">
+    <font size="6">Genetic algorithms</font>   </h2>
+    <br>
+    <br>
+    <br>
+    <img src="./image/lec5-6.png" alt="" style="width:60%;position: relative; left: 50px;">
+    <img src="./image/lec5-7.png" alt="" style="width:19%;position: relative; left: 200px;">
+
+    <p>Genetic algorithms use a natural selection metaphor</p>
+    
+    <ul>
+      <font size="5">
+        <li>Resample K individuals at each step (selection) weighted by fitness function
+        </li>
+        <li>Combine by pairwise crossover operators, plus mutation to give variety
+        </li>
+        <br>
+      </font>
+    <ul>
+    <p>Example: N-Queens</p>
+    <img src="./image/lec5-8.png" alt="" style="width:50%;position: relative; left: 280px;">
+      <font size="5">
+        <li>Does crossover make sense here?</li>
+        <li>What would mutation be?</li>
+        <li>What would a good fitness function be?</li>
+        <br>
+      </font>    
+    </ul>
+
+  </font>
+  
+  </div> 
+<div class="w3-container w3-teal">
+  <h1 id="title-1-4">Local search in continuous spaces</h1>
+</div>    
+<br>
+<div class="w3-container">
+  <img src="./image/lec5-9.png" alt="" style="width:50%;position: relative; left: 80px;">
+  <br>
+<br>
+<font size="6">
+<p>Handling a continuous state/action space</p>
+<font size="5">
+<ul>
+  <li>Discretize it! Define a grid with increment  , use any of the discrete algorithms
+    </li>
+  <li>Choose random perturbations to the state</li>
+  <ul>
+    <li>    a. First-choice hill-climbing: keep trying until something improves the state
+    </li>
+    <li>    b. Simulated annealing 
+    </li>
+  </ul>
+  <li>Compute gradient of f(x) analytically</li>
+</ul>   
+</font>
+ 
+</font>
+
+</div>
+<br>
+<div class="w3-container w3-teal">
+  <h1 id="title-1-5">summary</h1>
+</div>
+<br>
+<div class="w3-container">
+  <font size="5">
+  <p>Many configuration and optimization problems can be formulated as local search
+  </p>
+  <p>General families of algorithms:
+  </p>
+  <font size="5">
+    <ul>
+      <li>Hill-climbing, continuous optimization</li>
+      <li>Simulated annealing (and other stochastic methods)</li>
+      <li>Local beam search: multiple interaction searches</li>
+      <li>Genetic algorithms: break and recombine states</li>
+    </ul>      
+  </font>
+  <p>Many machine learning algorithms are local searches
+  </p>  
+  </font>
+
+
+
+<br>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+</html>

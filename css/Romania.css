@@ -1,0 +1,88 @@
+svg {
+    float: left;
+    width: 850px;
+    height: 500px;
+  }
+
+  #showresult {
+    color: gray;
+  }
+
+  #show {
+    height: 500px;
+  }
+
+  #node1 {
+    outline: none;
+    border: 1px solid #117A65;
+    font-size: 14px;
+    height: 50px;
+    color: #117A65;
+  }
+
+  #node2 {
+    /* margin-left: 150px; */
+    outline: none;
+    border: 1px solid #117A65;
+    font-size: 14px;
+    height: 50px;
+    color: #117A65;
+  }
+
+  #show1 {
+    font-size: 25px;
+    height: 50px;
+    color: #117A65;
+  }
+
+  #show2 {
+    /* margin-left: 230px; */
+    font-size: 25px;
+    height: 50px;
+    color: #117A65;
+  }
+
+  #BFS {
+    margin-left: 100px;
+    margin-top: 100px;
+    height: 50px;
+    color: #154360;
+    background-color: #5DADE2;
+    border: 2px #154360 double;
+  }
+
+  #Greedy_Algorithm {
+    margin-top: 100px;
+    margin-left: 100px;
+    height: 50px;
+    color: #154360;
+    background-color: #5DADE2;
+    border: 2px #154360 double;
+  }
+
+  #Astar_Algorithm {
+    margin-top: 100px;
+    margin-left: 100px;
+    height: 50px;
+    color: #154360;
+    background-color: #5DADE2;
+    border: 2px #154360 double;
+  }
+
+  #Stop {
+    margin-top: 100px;
+    margin-left: 100px;
+    height: 50px;
+    color: #154360;
+    background-color: #5DADE2;
+    border: 2px #154360 double;
+  }
+
+  #clear {
+    margin-top: 100px;
+    margin-left: 100px;
+    height: 50px;
+    color: #154360;
+    background-color: #5DADE2;
+    border: 2px #154360 double;
+  }

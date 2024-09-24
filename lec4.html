@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<title>启发式搜索</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>search</title>
+  <style>
+    .pancake {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      background-color: #f2f2f2;
+      border: 1px solid #ccc;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 50%;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .pancake-container {
+
+    margin-bottom: 20px;
+    margin-left: 100px; /* 添加此样式 */
+  }
+
+  </style>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="./css/Romania.css">
+  <link rel="stylesheet" href="./css/demo2.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>  
+  <script src="./js/DFS_BFS.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+  <a href="./index.html"><h3 class="w3-bar-item">人工智能</h3></a>
+  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">智能体与环境</a>
+  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">盲搜</a>
+  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">启发式搜索</a>
+  <ul>
+    <li><a href="#title-2-1" class="w3-bar-item w3-button">启发式搜索</a></li>
+    <li><a href="#title-2-2" class="w3-bar-item w3-button">示例：煎饼问题</a></li>
+    <li><a href="#title-2-3"class="w3-bar-item w3-button">搜索的启发策略（Search Heuristics）</a></li>
+    <li><a href="#title-2-4" class="w3-bar-item w3-button">贪婪搜索</a></li>
+    <li><a href="#title-2-5" class="w3-bar-item w3-button">A* 搜索</a></li>
+    <li><a href="#title-2-6" class="w3-bar-item w3-button">例子: 使用A*算法找到最短路径</a></li>
+  </ul>
+  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">局部搜索</a>
+  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">对抗搜索</a>
+  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">期望最大搜索</a>
+  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">马尔可夫决策过程</a>
+</div>
+
+<!-- Page Content -->
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-2-1">启发式搜索</h1>
+    </div>
+    <div class="w3-container"> 
+        <font size="5">
+        <p>启发式搜索是人工智能中一种搜索算法，它利用额外信息或启发式方法来更准确地决定首先探索哪些路径。</p>
+        <p>通过使用领域特定知识来驱动搜索，启发式搜索算法可以迅速排除不相关或不太有前途的选择，使搜索集中在最可靠的选择上。 </p>
+    <br>
+    </div>    
+
+    <div class="w3-container w3-teal">
+        <h1 id="title-2-2">示例：煎饼问题 </h1>
+    </div>
+    <div class="w3-container"> 
+      <font size="5">
+      <p>假设有n个煎饼叠放在一起，并且可以使用铲子来颠倒顶部的k个煎饼的顺序，其中2<=k<=n。然后煎饼排序问题询问需要多少这样的“前置颠倒(prefix reversals)”才能对任意堆栈进行排序。 </p>
+      <p>这里有一个与煎饼问题相关的游戏。你应该自顶向下按照从小到大的顺序将这些元素排序。
+      </p>
+  <br>
+  <div class="container">
+    <div class="image">
+      <img src="./image/pancake_problem.png", alt=""  style="float:right; width:49%;">
+    </div>
+    <div class="pancake-contanier" id="pancakes" style="margin-left: 200px">
+
+        <div class="pancake" onclick="flipPancake(0)">3</div>
+        <div class="pancake" onclick="flipPancake(1)">6</div>
+        <div class="pancake" onclick="flipPancake(2)">2</div>
+        <div class="pancake" onclick="flipPancake(3)">5</div>
+        <div class="pancake" onclick="flipPancake(4)">1</div>
+        <div class="pancake" onclick="flipPancake(5)">4</div>        
+      </div>
+
+      <p id="steps" style="margin-left: 150px">排序步数: 0</p>
+      <!-- <button onclick="pancakeSort()">Sort</button> -->
+      
+      <button class="shuffle-button" onclick="shufflePancakes()" style="margin-left: 180px">打乱顺序</button>    
+      
+      
+
+      
+
+    </div>
+
+      <script>
+        var pancakes = document.getElementById("pancakes").children;
+        var n = pancakes.length;
+        var steps = 0;
+        
+        function pancakeSort() {
+          sortPancakes(n);
+        }
+        
+        function sortPancakes(n) {
+          if (n <= 1) {
+            console.log("Sorting completed.");
+              document.getElementById("steps").innerHTML = "排序步数: " + steps;
+            return;
+          }
+          
+          var maxIndex = findMaxIndex(n);
+          
+          if (maxIndex !== n - 1) {
+            flip(maxIndex);
+            flip(n - 1);
+            steps += 2;
+          }
+          
+          sortPancakes(n - 1);
+        }
+        
+        function flip(k) {
+          var i = 0;
+          var j = k;
+          
+          while (i < j) {
+            var temp = pancakes[i].innerHTML;
+            pancakes[i].innerHTML = pancakes[j].innerHTML;
+            pancakes[j].innerHTML = temp;
+            
+            i++;
+            j--;
+          }
+          
+        }
+        
+        function findMaxIndex(n) {
+          var maxIndex = 0;
+          for (var i = 1; i < n; i++) {
+            if (parseInt(pancakes[i].innerHTML) > parseInt(pancakes[maxIndex].innerHTML)) {
+              maxIndex = i;
+            }
+          }
+          return maxIndex;
+        }
+        
+        function flipPancake(index) {
+          flip(index);
+          steps++;
+          document.getElementById("steps").innerHTML = "排序步数: " + steps;
+          if (isSorted()) {
+            //   alert("Success! Steps taken: " + steps);
+              showSuccessMessage("你成功了！煎饼总共翻了" + steps+"次。");
+              shufflePancakes();
+            }
+          
+        }
+        
+        function shufflePancakes() {
+          var pancakeValues = [];
+          for (var i = 1; i <= n; i++) {
+            pancakeValues.push(i);
+          }
+          
+          for (var i = n - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = pancakeValues[i];
+            pancakeValues[i] = pancakeValues[j];
+            pancakeValues[j] = temp;
+          }
+          
+          for (var i = 0; i < n; i++) {
+            pancakes[i].innerHTML = pancakeValues[i];
+          }
+          
+          steps = 0;
+          document.getElementById("steps").innerHTML = "排序步数: " + steps;
+        }
+        
+        function isSorted() {
+          for (var i = 0; i < n - 1; i++) {
+            if (parseInt(pancakes[i].innerHTML) > parseInt(pancakes[i + 1].innerHTML)) {
+              return false;
+            }
+          }
+          return true;
+        }
+    
+        function showSuccessMessage(message) {
+          var successBox = document.createElement('div');
+          successBox.innerHTML = message;
+          successBox.style.position = 'fixed';
+          successBox.style.top = '50%';
+          successBox.style.left = '50%';
+          successBox.style.transform = 'translate(-50%, -50%)';
+          successBox.style.backgroundColor = '#f2f2f2';
+          successBox.style.border = '1px solid#ccc';
+          successBox.style.padding = '20px';
+          successBox.style.fontSize = '24px';
+          successBox.style.fontWeight = 'bold';
+          
+          document.body.appendChild(successBox);
+          
+          setTimeout(function() {
+            successBox.remove();
+          }, 3000);
+        }
+        
+      </script>
+    <br>
+    <h2 style="position: relative;">
+      <font size="6">将煎饼按顺序排列需要多少步？</font> 
+  </h2>
+  
+    <p>对于从1到n的排列σ，令f(σ)表示将σ转换为按序排列所需的最少
+      前置颠倒次数，令f(n)表示对于所有σ在对称区块的Sn中的最大f(σ)。
+      我们证明f(n)<=(5n+5)/3，并且对于n是16的倍数时，f(n)>=17n/16。
+      此外，如果要求每个整数参与偶数个前置颠倒，则相应的函数
+      g(n)满足3n/2-1<=g(n)<=2n+3。</p>
+
+      <h2 style="position: relative;">
+        <font size="6">状态空间图</font> 
+        <font size="4">(图中的数字代表煎饼翻转的次数，同时也代表成本)</font>
+    </h2>
+    <div class="image">
+      <img src="./image/pancake_statespace.png", alt=""  style=" width:60%;">
+    </div>
+    <h2 style="position: relative;">
+      <font size="6">通用树搜索General Tree Search</font> 
+  </h2>
+    <font size="3"><pre style="margin-left: -0.3in"><img src="./image/pancake_tree.gif" alt="" style="float:right;width:40%;">
+      <font color="#000080"></font><font color="#0000ff">fucntion</font><font color="#000000"> TREE-SEARCH(</font><font color="#008800">problem, strategy</font>) <font color="#0000ff">return</font><font color="#000000"> a solution, or failure</font>
+      <font color="#000000">    initialize the search tree using the initial state of</font><font color="#008800"> problem</font>
+      <font color="#0000ff">    loop do</font>
+      <font color="#0000ff">        if</font><font color="#000000"> there are no candidates for expansion </font><font color="#0000ff">then </font>
+      <font color="#0000ff">            return</font> failure
+      <font color="#000000">        choose a leaf node for expansion according to </font><font color="#008800">strategy</font>
+      <font color="#0000ff">        if</font><font color="#000000"> the node contains a goal state</font><font color="#0000ff"> then</font>
+      <font color="#0000ff">            return </font><font color="#000000">the corresponding solution</font>
+      <font color="#0000ff">        else</font><font color="#000000"> expand the node and add the resulting nodes to the search tree</font>
+      <font color="#0000ff">    end</font></pre>
+    </font>
+
+    <div class="w3-container"> 
+      <font size="5">
+      <p>我们可以使用额外信息来做出更准确的决策吗？
+      </p>
+      <p> 接下来，让我们了解什么是 <span style="color: red;">启发策略（heuristics）</span> 。</p>
+  </div>
+  </div>
+
+
+
+  <div class="w3-container w3-teal">
+    <h1 id="title-2-3">搜索的启发策略（Search Heuristics）</h1>
+</div>
+
+<div class="w3-container">
+<ul>
+  <br>
+  <font size="5">
+  <p style="color: blue;">启发策略（ Heuristics ）是:</p>
+  <li>估计一个状态到目标有多接近的函数</li>
+  <li>为一个特定的搜索问题而设计的</li>
+  <li>例如: Manhattan distance, Euclidean distance for pathing</li>
+  </font>
+  <p><img src="./image/pancake_hx.png" alt="" style="float:right; width:45%;"> <br><br><br>例如，煎饼问题的启发策略可以是仍处于错误位置的最大煎饼的编号。
+  </p>
+</ul>
+</div>
+
+<div class="w3-container w3-teal">
+  <h1 id="title-2-4">贪婪搜索</h1>
+</div>
+
+<div class="w3-container">
+  <font size="5">
+  <p>贪婪搜索是一种人工智能搜索算法，试图从给定的起点到目标找到最有前景的路径。它优先考虑看起来最有前景的路径，而不论它们是否实际上是最短路径。该算法通过评估每条可能路径的成本，然后扩展具有最低成本的路径来工作。这个过程重复进行，直到达到目标。</p>
+  <p>贪婪搜索的策略是扩展您认为最接近目标状态的节点。</p>
+  <p style="color:blue;">所以贪婪搜索的启发策略是什么？ </p>
+  <p style="text-indent: 40px;">Heuristic:估计每个状态到最近目标的距离</p>
+  <p style="color: blue;">贪婪搜索的情况</p>
+  </font>
+  <ul>
+    <font size="5">
+    <li>通常情况:Best-first 使你直接到达(错误的) 目标</li>
+    <li>最坏情况: 类似 DFS</li>
+    </font>
+  </ul>
+  
+  <h2 style="position: relative;">
+  <font size="6">Video of Demo Contours Greedy (Empty)</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/greedy1.mp4" type="video/mp4"></source>
+  </video>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">Video of Demo Contours Greedy (Pacman Small Maze)</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/greedy2.mp4" type="video/mp4"></source>
+  </video>
+</div>
+
+<div class="w3-container w3-teal">
+  <h1 id="title-2-5">A* 搜索</h1>
+</div>
+
+<div class="w3-container">
+  <p>A*搜索结合了 UCS 和 Greedy。  </p>
+  <ul>
+    <li><font color="#3333ff">Uniform-cost</font><font color="#000000"> 按路径成本或后向传播成本g(n)排序</font></li>
+    <li><font color="#cc0000">Greedy</font><font color="#000000">按目标接近度或向前传播成本h(n)排序</font></li>
+    <li><font color="#cc00cc">A* search</font><font color="#000000"> 按总和排序：f(n)=g(n)+h(n)</font></li>
+  </ul>
+  <img src="./image/U_G_A_cmp.png" alt="" style="float:left;width:50%;">
+  <img src="./image/teg_grenager.png" alt="" style="position: relative;left: 120px;;width: 30%;">
+  <h2 style="position: relative;">
+    <font size="6">可采纳启发式（Admissible Heuristics）</font> 
+  </h2>
+  <p>启发函数 h 是 可采纳（ admissible / optimistic ） 那么:    <span style="color: red;">0≤h(n)≤h*(n)</span> 其中 h*(n) 是到最近目标的真实成本。</p>
+  <p>想出可采纳的启发函数是A*算法实际使用中的重点。
+  </p>
+  <p>A*搜索在找到的到目标的最佳路径的成本小于或等于任何其他路径的最佳可能成本时终止。由于一个可靠的启发函数永远不会高估成本，所以当找到目标顶点时，只需将其估计成本设为实际成本，将目标顶点放入优先队列即可。这确保了A*搜索在搜索过程中不会错过最佳解决方案。
+    算法在弹出队列中具有最小成本的目标顶点时终止。</p>
+    
+    <h2 style="position: relative;">
+      <font size="6">A*图搜索的最优性</font> 
+    </h2>
+  <p>假设有两个节点 A 和 B。A 是最优目标节点。B 是次优目标节点。</p>
+
+  <P><span style="color: blue;"><strong>Proof:</strong></span></P>
+  <font size="3"><pre style="margin-left: -0.3in"><img src="./image/Optimality_mountain.png" alt="" style="float:right;width:35%;">
+    <font color="#000000">考虑B在边缘</font>
+    <font color="#000000">A的某个祖先节点n也在边缘</font>
+    <font color="#000000">n将会在B之前被扩展</font>
+    <font color="#000000">f(n)=g(n)+h(n)</font>
+    <font color="#000000">f(A)=g(A)+h(A)  因为A是目标状态， h(A)=0    </font>
+    <font color="#000000">所以 f(A)=g(A)</font>
+    <font color="#000000">同理可得 f(B)=g(B)</font>
+    <font color="#000000">A是最优的，B是次优的。g(A)&ltg(B)，所以f(A)&ltf(B)  </font>
+    <font color="#000000">f(n)&lt=f(A)，所以f(n)&ltf(B)</font>
+    <font color="#000000">结果是n将在B之前被扩展</font>
+    <font color="#000000">n可以代表A的任何祖先</font></pre>
+  </font>
+</div>
+
+  <h2 style="position: relative;">
+    <font size="6"> A*树搜索的特性</font> 
+  </h2>
+
+<div class="w3-container">
+  <p>A*算法主要朝着目标方向扩展，但同时也保有一定的余地以确保寻找到最优解。</p>
+  <h2 style="position: relative;">
+    <font size="5">Video of Demo Contours (Empty) – A*</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/contours_Astar.mp4" type="video/mp4"></source>
+  </video>
+  <br>
+  <h2 style="position: relative;">
+    <font size="5">Video of Demo Contours (Pacman Small Maze) – A*</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/PSM_Astar.mp4" type="video/mp4"></source>
+  </video>
+  </div>
+
+  <div class="w3-container w3-teal">
+    <h1 id="title-2-6">例子: 使用A*算法找到最短路径</h1>
+</div>
+<div class="w3-container">
+  <p>这是一个迷宫游戏。您可以选择迷宫中的两个浅灰色方块作为起点和终点（绿色代表起点，红色代表终点）。这个演示可以自动计算最短路径。</p>
+  <br>
+  <iframe src="./demo/aStar.html" style="width:100%; height:800px;"></iframe>
+</div>

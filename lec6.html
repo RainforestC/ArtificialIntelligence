@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<title>Adversarial Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local search</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="./css/Romania.css">
+  <link rel="stylesheet" href="./css/DFS_BFS.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>  
+  <script src="./js/DFS_BFS.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head> 
+<body>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+  <a href="./index.html"><h3 class="w3-bar-item">Artificial Intelligence</h3></a>
+  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">Agents and environments</a> 
+  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">Uninformed Search</a>
+  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">Informed Search</a>
+  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
+  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
+  <ul>
+    <li><a href="#title-1-1" class="w3-bar-item w3-button">Adversarial Games</a></li>
+    <li><a href="#title-1-2" class="w3-bar-item w3-button">Adversarial Search</a></li>
+    <li><a href="#title-1-3"class="w3-bar-item w3-button">Resource Limits</a></li>
+    <li><a href="#title-1-4" class="w3-bar-item w3-button">Evaluation Functions</a></li>
+    <li><a href="#title-1-5" class="w3-bar-item w3-button">Summary</a></li>
+  </ul>
+  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
+  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
+</div>
+
+<!-- Page Content -->
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+      <h1>Adversarial Search and Game Trees</h1></div>
+      <div class="w3-container">
+        <font size="6">
+          <h2>Game Playing State-of-the-Art</h2>
+        </font>
+        <img src="./image/lec6-2.png" alt="" style="width:40%;position: relative; left: 300px;">
+        <font size="5">
+      <ul>
+        <li>
+          Checkers: 1950: First computer player.  1994: First computer champion: Chinook ended 40-year-reign of human champion Marion Tinsley using complete 8-piece endgame. 2007: Checkers solved!
+        </li>
+        <li>
+          Chess: 1997: Deep Blue defeats human champion Gary Kasparov in a six-game match.  Deep Blue examined 200M positions per second, used very sophisticated evaluation and undisclosed methods for extending some lines of search up to 40 ply.  Current programs are even better, if less historic.
+        </li>
+        <li>
+          Go: 2016: Alpha GO defeats human champion. Uses Monte Carlo Tree Search, learned evaluation function. 
+        </li>
+        <li>Pacman</li>
+      </ul>          
+        </font>
+
+    <div class="w3-container w3-teal">
+      <h1 id="title-1-1">Adversarial Games</h1>
+    </div>
+    <div class="w3-container"> 
+      <h2 style="position: relative;">
+        <br>
+        <font size="6">Types of Games</font></h2>
+      <img src="./image/lec6-3.png" alt="" style="width:40%;position: relative; left: 280px;">
+    <font size="5">
+      <h2 style="position: relative;">
+        <font size="6">Deterministic Games</font></h2><img src="./image/lec6-4.png" alt="" style="width:30%;position: relative;float:right;margin: 20px;">
+      <p>Many possible formalizations, one is:
+      </p>
+      
+      <ul>
+        <font size="5">
+          <li>States: S (start at s0)</li>
+          <li>Players: P={1...N} (usually take turns)</li>
+          <li>Actions: A (may depend on player / state)</li>
+          <li>Transition Function: SxA→S</li>
+          <li>Terminal Test: S→{true,false}</li> 
+          <li>Terminal Utilities: SxP→R</li>
+        <br>
+        </font>
+      </ul>
+        <p>Solution for a player is a policy: S→A
+        </p>
+        <h2 style="position: relative;">
+          <font size="6">Zero-Sum Games</font></h2>
+        <img src="./image/lec6-5.png" alt="" style="width:30%;position: relative; left: 280px;">
+        <ul>
+          <font size="5">
+            <li>Agents have opposite utilities (values on outcomes)</li>
+            <li>Let us think of a single value that one maximizes and the other minimizes</li>
+            <li>Adversarial, pure competition</li>
+          <br>
+          </font>
+        </ul>
+        <h2 style="position: relative;">
+          <font size="6">General Games</font></h2>
+          <img src="./image/lec6-6.png" alt="" style="width:50%;position: relative; left: 280px;">
+          <li>Agents have independent utilities (values on outcomes)</li>
+          <li>Cooperation, indifference, competition, and more are all possible</li>
+          <li>More later on non-zero-sum games</li>
+          <br>
+  </font>
+    
+    </div>    
+<div class="w3-container w3-teal">
+
+  <h1 id="title-1-2">Adversarial Search</h1>
+</div>
+<div class="w3-container"> 
+<font size="5">
+  <h2>Single-Agent Trees</h2>
+  <img src="./image/lec6-7.png" alt="" style="width:50%;position: relative; left: 280px;">
+  <h2>Value of a State</h2>
+  <img src="./image/lec6-8.png" alt="" style="width:50%;position: relative; left: 280px;">
+  <h2>Adversarial Game Trees</h2>
+  <img src="./image/lec6-9.png" alt="" style="width:50%;position: relative; left: 280px;">
+<h2 style="position: relative;">
+  <font size="6">Tic-Tac-Toe Game</font> 
+  <div>
+    <iframe src="./tic_tac_toe/index.html" style="width:100%; height:600px;"></iframe>
+  </div>
+  <p>Game Tree</p>
+  <img src="./image/lec6-10.png" alt="" style="width:70%;position: relative; left: 280px;">
+
+</h2>
+</font>
+</div>
+<div class="w3-container"> 
+<h2 style="position: relative;">
+  <font size="6">Adversarial Search (Minimax)</font>
+</h2>
+<img src="./image/lec6-11.png" alt="" style="width:30%;position: relative; left: 380px;">
+<font size="5"><p>Deterministic, zero-sum games</p></font>
+  <ul>
+    <font size="5">
+      <li>Tic-tac-toe, chess, checkers</li>
+      <li>One player maximizes result</li>
+      <li>The other minimizes result</li>
+    </font>
+  </ul>
+  <br>
+  <font size="5"><p>Minimax search</p></font>
+  <ul>
+    <font size="5">
+      <li>A state-space search tree</li>
+      <li>Players alternate turns</li>
+      <li>Compute each node’s minimax value: the best achievable utility against a rational (optimal) adversary</li>
+    </font>
+  </ul>
+<h2 style="position: relative;">
+  <font size="6">Minimax Implementation (Dispatch)</font> 
+</h2>
+<img src="./image/lec6-12.png" alt="" style="width:70%;position: relative; left: 180px;">
+</div> 
+<div class="w3-container w3-teal">
+  <h1 id="title-1-3">Resource Limits</h1>
+</div>    
+<br>
+<div class="w3-container"> 
+  <h2 style="position: relative;">
+    <font size="6">Minimax</font>
+  </h2>
+  <font size="5">
+
+  <p>Minimax Example</p>
+  <img src="./image/lec6-13.png" alt="" style="width:50%;position: relative; left: 280px;">
+
+  <p>Minimax Pruning</p>
+  <img src="./image/lec6-14.png" alt="" style="width:50%;position: relative; left: 280px;">
+
+  </font>
+
+  <h2 style="position: relative;">
+    <font size="6">Alpha-Beta</font> 
+  </h2>
+  <h3>Alpha-Beta Pruning</h3>
+  <font size="5">
+    <p>General configuration (MIN version)</p>
+    <ul>
+      <li>We’re computing the MIN-VALUE at some node n</li>
+      <li>We’re looping over n’s children</li>
+      <li>n’s estimate of the childrens’ min is dropping</li>
+      <li>Who cares about n’s value?  MAX</li>
+      <li>Let a be the best value that MAX can get at any choice point along the current path from the root</li>
+      <li>If n becomes worse than a, MAX will avoid it, so we can stop considering n’s other children (it’s already bad enough that it won’t be played)</li>
+    </ul>
+    <p>MAX version is symmetric</p>
+  
+  <h3>Alpha-Beta Implementation</h3>
+  <img src="./image/lec6-15.png" alt="" style="width:50%;position: relative; left: 280px;">
+  <br>
+  <p>Try using python code</p>
+  <div>
+    <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
+  </div></font>
+  <h3>Alpha-Beta Pruning Properties</h3>
+  <img src="./image/lec6-16.png" alt="" style="width:35%;position: relative; left: 280px;">
+  <font size="5">
+    <p>This pruning has no effect on minimax value computed for the root!
+    </p>
+    <p>Values of intermediate nodes might be wrong
+    </p>
+    <ul>
+      <li>Important: children of the root may have the wrong value</li>
+      <li>So the most naïve version won’t let you do action selection</li>
+
+    </ul>
+    <p>Good child ordering improves effectiveness of pruning
+    </p>
+    <p>With “perfect ordering”:
+    </p>
+    <ul>
+      <li>Time complexity drops to O(b^(m/2))</li>
+      <li>Doubles solvable depth!</li>
+      <li>Full search of, e.g. chess, is still hopeless…
+</li>
+    </ul>
+    <p>This is a simple example of metareasoning (computing about what to compute)
+    </p>
+  </font>
+  <h3>Resource limits</h3>
+  <img src="./image/lec6-17.png" alt="" style="width:35%;position: relative; left: 280px;">
+
+  <font size="5">
+    <p>Problem: In realistic games, cannot search to leaves!
+    </p>
+    <p>Solution: Depth-limited search
+    </p>
+    <ul>
+      <font size="5">
+        <li>Instead, search only to a limited depth in the tree</li>
+        <li>Replace terminal utilities with an evaluation function for non-terminal positions</li>
+        
+        <br>
+      </font>
+    </ul>
+    <p>Example:
+    </p>
+    <ul>
+      <font size="5">
+        <li>Suppose we have 100 seconds, can explore 10K nodes / sec</li>
+        <li>So can check 1M nodes per move</li>
+        <li>α-βreaches about depth 8 – decent chess program</li>
+        
+      </font> 
+    </ul>
+    <p>Guarantee of optimal play is gone
+    </p>
+    <p>More plies makes a BIG difference
+    </p>
+    <p>Use iterative deepening for an anytime algorithm
+    </p>
+  </font>
+  
+  </div> 
+<div class="w3-container w3-teal">
+  <h1 id="title-1-4">Evaluation Functions</h1>
+</div>    
+<br>
+<div class="w3-container">
+  <img src="./image/lec6-18.png" alt="" style="width:80%;position: relative; left: 80px;">
+  <br>
+<br>
+<font size="6">
+<p>Pacman with Depth-2 Lookahead</p>
+<video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+  <source src="./video/vedio6-1.mp4" type="video/mp4"></source>
+</video>
+<br>
+<p>Pacman with Depth-10 Lookahead</p>
+<video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+  <source src="./video/video6-2.mp4" type="video/mp4"></source>
+</video>
+<br>
+<p>Video of Demo Thrashing (d=2)</p>
+<video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+  <source src="./video/vedio6-3.mp4" type="video/mp4"></source>
+</video>
+<br>
+<p>Why Pacman Starves</p>
+<img src="./image/lec6-19.png" alt="" style="width:80%;position: relative; left: 80px;">
+<br>
+<p>Video of Demo Thrashing -- Fixed (d=2)</p>
+<video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+  <source src="./video/vedio6-4.mp4" type="video/mp4"></source>
+</video>
+<br>
+
+</font>
+
+</div>
+<br>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+</html>

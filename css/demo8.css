@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+
+  
+  #discount, #sequence {
+    font-weight: bold;
+  }
+  
+  #userAnswer {
+    margin-top: 10px;
+    padding: 5px;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .long-input {
+    width: 400px; /* 长输入框的宽度 */
+  }
+
+  .alone-img{
+    display:block;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }

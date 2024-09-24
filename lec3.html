@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<title>盲搜</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>search</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="./css/Romania.css">
+  <link rel="stylesheet" href="./css/DFS_BFS.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>  
+  <script src="./js/DFS_BFS.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+  <a href="./index.html"><h3 class="w3-bar-item">人工智能</h3></a>
+  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">智能体与环境</a>
+  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">盲搜</a>
+  <ul>
+    <li><a href="#title-1-0" class="w3-bar-item w3-button">搜索问题</a></li>
+    <li><a href="#title-1-1" class="w3-bar-item w3-button">盲搜</a></li>
+    <li><a href="#title-1-2" class="w3-bar-item w3-button">举例：在罗马尼亚旅行</a></li>
+    <li><a href="#title-1-3"class="w3-bar-item w3-button">深度优先搜索</a></li>
+    <li><a href="#title-1-4" class="w3-bar-item w3-button">广度优先搜索</a></li>
+    <li><a href="#title-1-5" class="w3-bar-item w3-button">例子：深度优先搜索和广度优先搜索</a></li>
+    <li><a href="#title-1-6" class="w3-bar-item w3-button">DFS vs BFS</a></li>
+    <li><a href="#title-1-7" class="w3-bar-item w3-button">一致性代价搜索</a></li>
+  </ul>
+  
+  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">启发式搜索</a>
+  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">局部搜索</a>
+  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">对抗搜索</a>
+  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">期望最大搜索</a>
+  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">马尔可夫决策过程</a>
+</div>
+
+<!-- Page Content -->
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-1-0">搜索问题</h1>
+    </div>
+<h2 style="position: relative; left:20px">
+  <font size="6">一个搜索问题包括：</font> 
+</h2>
+<img src="./image/search5.png" alt="" style="width:50%; position:relative; left:50px;">
+<img src="./image/search6.png" alt="" style="width:30%; position: relative; left: 190px;">
+<ul>
+  <font size="5">
+  <li>状态空间 S 
+  </li>
+  <li>初始状态 s0
+  </li>
+  <li>每一个状态的动作 A(s) 
+  </li>
+  <li>状态转移模型(s,a)
+  </li>
+  <li>目标测试 G(s)
+  </li>
+  <li>动作代价 c(s,a,s’)
+  </li>
+  </font>
+</ul>
+<h2 style="position: relative; left:20px">
+  <font size="6">解决方案是能够达到目标状态的行为序列</font> 
+</h2>
+<h2 style="position: relative; left:20px">
+  <font size="6">最优解决方案：在所有解决方案中具有最低的成本
+  </font> 
+</h2>
+</div>
+    
+<!-- Page Content -->
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-1-1">盲搜</h1>
+    </div>
+    <div class="w3-container"> 
+    <font size="5">
+    <p>无信息搜索(Uninformed search)是一类通用搜索算法，以穷举法操作。无信息搜索算法除了知道如何遍历树之外，对状态或搜索空间没有额外信息，因此也被称为盲搜。</p>
+      
+    <a href="https://akshaymatre08.github.io/AlgorithmVisualizer/" >→ 尝试搜索算法</a> 
+  </font>
+    
+    </div>    
+    <br>
+<div class="w3-container w3-teal">
+
+  <h1 id="title-1-2">举例：在罗马尼亚旅行 </h1>
+</div>
+<div class="w3-container">
+  <svg id="mainsvg"></svg>
+  <script src="./js/Romania.js"></script>
+  <div id="show">
+    <div>
+      <span id="show1" style="width:50%; position:relative; left:10px;">
+        起始节点
+      </span>
+      <br>
+      <input id="node1" type="text" value="Arad" outline="none">
+      <br>
+      <span id="show2" style="width:50%; position:relative; left:10px;">
+        结束节点
+      </span>
+      <br>
+      <input id="node2" type="text" value="Bucharest" outline="none">
+    </div>
+    <div id="showresult">
+    </div>
+  </div>
+  <button id="BFS" onmousedown="BFS_down()"
+    onmouseup="BFS_up(document.getElementById('node1').value,document.getElementById('node2').value)">
+    开始BFS算法
+  </button>
+  <button id="Greedy_Algorithm" onmousedown="Greedy_down()"
+    onmouseup="Greedy_up(document.getElementById('node1').value,document.getElementById('node2').value)">
+    开始贪心算法
+  </button>
+  <button id="Astar_Algorithm" onmousedown="Astar_down()"
+    onmouseup="Astar_up(document.getElementById('node1').value,document.getElementById('node2').value)">
+    开始A*算法
+  </button>
+  <button id="Stop" onmousedown="Stop_down()" onmouseup="Stop_up()">
+    停止
+  </button>
+  <button id="clear" onmousedown="Clear_down()" onmouseup="Clear_up()">
+    清除
+  </button>
+  <br>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">动作空间</font> 
+</h2>
+
+
+<div class="w3-container">
+<font size="5">
+<p>The <span style="color: red;">world state</span> 涵盖了环境中的所有细节
+</p>
+</font>
+    <img src="./image/search7.png" alt="" style="width:30%; position:relative; left:150px;">
+    <font size="5">
+      <p> <span style="color: red;">搜索状态</span> 仅保留规划所需的细节（抽象）
+      </p>
+    </font>    
+<ul>
+    <font size="5">
+    <p style="color: blue;">问题：寻路（Pathing）</p>
+    <li>状态：(x,y) 位置</li>
+    <li>动作：NSEW</li>
+    <li>转移：更新 x,y 的值</li>
+    <li>目标测试：(x,y) 是否为目的地</li>
+    <br>
+    <p style="color: blue;">问题：吃掉所有的点（Eat-all-dots）</p>
+    <li>状态： {(x,y)，点的布尔值}</li>
+    <li>动作：NSEW</li>
+    <li>转移：更新 x,y 的值和点的布尔值</li>
+    <li>目标测试：所有点的布尔值都为false</li>
+    <br>
+    <p style="color: blue;"> <img src="./image/search8.png" alt="" style="float:right; width:30%;">World state:</p>
+    <li>智能体位置：120</li>
+    <li>食物统计：30</li>
+    <li>Ghost位置：12</li>
+    <li>智能体移动方向：NSEW</li>
+    <br>
+    <p style="color: blue;">数量统计</p>
+    <li>World states?</li>
+    <li>寻路问题的状态？</li>
+    <li>吃掉所有点问题的状态？</li>
+    </font>
+</ul>
+<br>
+</div>
+<br>
+<div class="w3-container w3-teal">
+  <h1 id="title-1-3">深度优先搜索</h1>
+</div>    
+<br>
+<div class="w3-container">
+  <font size="5">
+  <p>假设我们用栈替换我们之前广度优先搜索函数中的队列。这个函数现在将执行深度优先搜索！</p>
+    <font size="4">
+    <pre style="margin-left: 0.79in"><font color="#008800"><img src="./image/dfs.gif" alt="" style="float:right;width:50%;"># iterative depth-first search</font>
+    <font color="#000080">def</font><font color="#000000"> dfs_iter(g, start):</font>
+    <font color="#000000">    q = []</font>
+    <font color="#000000">    q.append(start)</font>
+    <font color="#000000">    visited = { start }</font>
+    <font color="#000000">    </font>
+    <font color="#000000">    </font><font color="#000080">while</font><font color="#000000"> q:</font>
+    <font color="#000000">        node = q.pop()</font>
+    <font color="#000000">        print(</font><font color="#0000ff">'exploring '</font><font color="#000000"> + node)</font>
+    <font color="#000000">        </font><font color="#000080">for</font><font color="#000000"> n in g[node]:</font>
+    <font color="#000000">            </font><font color="#000080">if</font><font color="#000000"> n not in visited:</font>
+    <font color="#000000">                visited.add(n)</font>
+    <font color="#000000">                q.append(n)     </font><font color="#008800"># push</font></pre><p>
+
+    </font>
+    具体来说，这是一个<b>非递归深度优先搜索</b>，或者说是一个具有<b>显式栈</b>的深度优先搜索。</p>
+    <p>这表明栈与深度优先搜索之间存在密切关系。具体而言，栈是一种后进先出（LIFO）的数据结构。
+      当我们执行深度优先搜索时，我们发现的最后一个前沿节点是我们将通过跟随其边展开的第一个节点。
+      同样，队列是一种先进先出（FIFO）的数据结构，在广度优先搜索中，我们发现的第一个前沿节
+      点是我们将展开的第一个节点。</p>
+    <p>在搜索可能非常深的情况下，以非递归方式实现深度优先搜索有时是明智的选择。这样可以避免在
+      大多数操作系统上固定的调用栈空间耗尽的情况。</p>
+
+  </font>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">试试使用Python编写代码：</font> 
+</h2>
+<br>
+  <div>
+    <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
+  </div>
+</div>
+<br>
+<div class="w3-container w3-teal">
+  <h1 id="title-1-4">广度优先搜索</h1>
+</div>    
+<br>
+<div class="w3-container">
+  <font size="5">
+    <p>从某个节点N开始，<b>广度优先搜索</b> 首先访问与N相邻的节点，即与N距离为1
+      的节点。然后访问距离为2的节点，依此类推。通过这种方式，它可以确定从N到图中
+      其他每个节点的<b>最短距离</b>。</p>
+      <p>我们可以使用<b>队列</b>实现广度优先搜索。就像深度优先图搜索一样，我们必
+        须记住我们访问过的所有节点，以避免走进死循环。我们首先将起始节点添加到队列
+        中并标记为已访问。在循环中，我们反复从队列中移除节点。每次移除一个节点时，
+        我们将其所有相邻且未访问的节点标记为已访问并添加到队列中。算法在队列为空
+        时终止，此时我们将访问所有可达节点。</p>
+      <p>队列代表了前驱节点。当我们从队列中移除一个节点时，它就转移到了已探索集合中。
+        就像深度优先图搜索一样，已访问的节点是前驱节点，而已探索集合中的节点是已
+        探索节点。</p>
+      <p>随着算法的运行，队列中的所有节点大致处于与起始节点相同的距离。更准确地说
+        在任何时刻都存在某个值d，使得队列中的所有节点与起始节点的距离为d或(d + 1)。</p>
+      <p>以下是一个执行广度优先搜索的Python函数bfs()。它的参数列表是邻接表表示的图，
+        起始节点：</p>
+        <font size="4">
+        <pre style="margin-left: 0.79in"><font color="#000080"><font color="#008800"><img src="./image/bfs.gif" alt="" style="float:right;width:50%;">import</font><font color="#000000"> collections</font>
+        
+        <font color="#008800"># breadth-first search</font>
+        <font color="#000080">def</font><font color="#000000"> bfs(g, start):</font>
+        <font color="#000000">    q = deque()</font>
+        <font color="#000000">    q.appendleft(start)   </font><font color="#008800"># enqueue</font>
+        <font color="#000000">    visited = { start }</font>
+        <font color="#000000">    </font>
+        <font color="#000000">    </font><font color="#000080">while</font><font color="#000000"> q:</font>
+        <font color="#000000">        node = q.pop()</font>
+        <font color="#000000">        print(</font><font color="#0000ff">'exploring '</font><font color="#000000"> + node)</font>
+        <font color="#000000">        </font><font color="#000080">for</font><font color="#000000"> n in g[node]:</font>
+        <font color="#000000">            </font><font color="#000080">if</font><font color="#000000"> n not in visited:</font>
+        <font color="#000000">                visited.add(n)</font>
+        <font color="#000000">                q.appendleft(n)   </font><font color="#008800"># enqueue</font></pre> 
+        </font>
+        <p>
+          请注意，我们必须在将节点添加到队列时标记为已访问，而不是在移除它们时标记。
+          （如果我们只在移除节点时标记为已访问，那么我们的算法可能会多次将相同节点
+          添加到队列中。）</p>
+        <p>与深度优先搜索类似，广度优先搜索对每个顶点和边都执行常量级别的工作，因此
+          它的运行时间也是O(V + E)。</p>
+  </font>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">试试使用Python编写代码：</font> 
+</h2>
+<br>
+  <div>
+    <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
+  </div>
+</div>
+<br>
+<div class="w3-container w3-teal">
+  <h1 id="title-1-5">例子：深度优先搜索和广度优先搜索</h1>
+</div>
+<br>
+<div class="w3-container">
+<div class = "main">
+    <div class="graph">
+        <img src="./image/grafo.png" alt="grafo">
+    </div>
+    <div class="options">
+        <div style="text-align: center;" >
+                <button class="btn btn-primary" onClick ="switchSearch()" id="dfs" type="submit">DFS</button>
+                <button class="btn btn-primary" onClick ="switchSearch()" id="bfs" disabled type="submit">BFS</button>
+                <hr>
+        </div>
+        <div>
+                <form>
+                    <div class="form-group">
+                        <label for="begin">路径起始位置</label>
+                        <select class="form-control" id="begin" onchange="setBegin()">
+                            <option>a</option>
+                            <option>b</option>
+                            <option>c</option>
+                            <option>d</option>
+                            <option>e</option>
+                            <option>f</option>
+                            <option>g</option>
+                            <option>h</option>
+                            <option>i</option>
+                            <option>j</option>
+                            <option>k</option>
+                            </select>
+                            <br>
+                            <label for="end">路径结束位置</label>
+                        <select class="form-control" id="end">
+                            <option>a</option>
+                            <option>b</option>
+                            <option>c</option>
+                            <option>d</option>
+                            <option>e</option>
+                            <option>f</option>
+                            <option>g</option>
+                            <option>h</option>
+                            <option>i</option>
+                            <option>j</option>
+                            <option>k</option>
+                        </select>
+                    </div>
+                </form> 
+                <hr>    
+        </div>
+        <span>路径</span>
+        <div class="path">
+            <div class="first" id="1"></div>
+            <div id="2"></div>
+            <div id="3"></div>
+            <div id="4"></div>
+            <div id="5"></div>
+            <div id="6"></div>
+            <div id="7"></div>
+            <div id="8"></div>
+            <div id="9"></div>
+            <div id="10"></div>
+            <div id="11"></div>
+        </div>
+        <div class="controls">
+                <button type="button" class="btn btn-success btn-lg btn-block" id="start" onclick="start()">开始</button>
+                <button type="button" class="btn btn-danger btn-lg btn-block"  id="reset" onclick="reset()" disabled>重置</button>
+        </div>
+    </div>
+</div>
+
+<script>
+        function setBegin() {
+            let x = document.getElementById("begin").value;
+            document.getElementById("1").innerHTML =  x;
+        }
+        
+</script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+</div>
+<br>
+<div class="w3-container w3-teal">
+  <h1 id="title-1-6">DFS vs BFS </h1>
+</div>    
+<br>
+<div class="w3-container">
+  <h2 style="position: relative;">
+    <font size="6">Example: Maze Water DFS/BFS (part 1)</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/vedio3.mp4" type="video/mp4"></source>
+  </video>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">Example: Maze Water DFS/BFS (part 2)</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/vedio4.mp4" type="video/mp4"></source>
+  </video>
+</div>
+<br>
+
+<br>
+<div class="w3-container w3-teal">
+  <h1 id="title-1-7">一致性代价搜索
+  </h1>
+</div>    
+<br>
+<div class="w3-container">  
+  <font size="5">
+    <a href="https://akshaymatre08.github.io/AlgorithmVisualizer/" >→ 尝试搜索算法</a> 
+  </font>
+  <br>
+    <br>
+  <h2 style="position: relative;">
+    <font size="6">什么是一致性代价搜索？</font> 
+  </h2>
+  <font size="5">
+    <p><img src="./image/ucs.gif" alt="" style="float:right;width:60%;">一致性代价搜索算法是一种搜索算法，用于找到从源节点到目标节点的路径的最小累积成本。它是一种无信息算法，即它没有关于路径或节点的先前信息，这就是为什么它是一种暴搜方法。</p>
+    <p>一致性代价搜索是<a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra算法</a> 的一种变体。它用于在有向加权图周围找到从源节点到目标节点的最短路径。这种搜索算法使用蛮力方法，根据它们当前的权重访问所有节点，并通过反复检查所有可能的路径找到具有最小成本的路径。</p>
+
+      <p>
+        由于它不考虑路径或目标节点的任何先前状态或信息，因此它是一种盲搜算法。
+      </p>
+      <p>
+        我们使用一个布尔数组visited和一个优先队列来找到最小成本。具有最小成本的节点具有最高优先级。它使用盲目搜索，因为对节点没有先前信息。上述算法的算法如下：
+      
+      上述算法的步骤如下所示：
+      </p>
+      <ul>
+        <li>创建一个优先队列，一个大小为节点数的布尔数组visited和一个初始值为最大值的min_cost变量。将源节点添加到队列中并标记为已访问。</li>
+        <li>从队列中弹出具有最高优先级的元素。如果移除的节点是目标节点，则检查min_cost变量，如果min_cost变量的值大于当前成本，则更新变量。</li>
+        <li>如果给定的节点不是目标节点，则将所有未访问节点添加到与当前节点相邻的优先队列中。</li>
+      </ul>
+  </font>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">试试使用Python编写代码：</font> 
+</h2>
+<br>
+  <div>
+    <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
+  </div>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">演示空 UCS 的视频</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/vedio5.mp4" type="video/mp4"></source>
+  </video>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">演示 Maze with Deep/Shallow Water 的视频 – BFS or UCS (part1)</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/vedio6.mp4" type="video/mp4"></source>
+  </video>
+  <br>
+  <h2 style="position: relative;">
+    <font size="6">演示 Maze with Deep/Shallow Water 的视频 – BFS or UCS (part2)</font> 
+  </h2>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/vedio7.mp4" type="video/mp4"></source>
+  </video>
+</div>
+</div> 
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+</html>
