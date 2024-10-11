@@ -17,114 +17,134 @@
 <body>
 
 <!-- Sidebar -->
-<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
-  <a href="./index.html"><h3 class="w3-bar-item">Artificial Intelligence</h3></a>
-  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">Agents and environments</a> 
-  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">Uninformed Search</a>
-  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">Informed Search</a>
-  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
-  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
-  <ul>
-    <li><a href="#title-1-1" class="w3-bar-item w3-button">Adversarial Games</a></li>
-    <li><a href="#title-1-2" class="w3-bar-item w3-button">Adversarial Search</a></li>
-    <li><a href="#title-1-3"class="w3-bar-item w3-button">Resource Limits</a></li>
-    <li><a href="#title-1-4" class="w3-bar-item w3-button">Evaluation Functions</a></li>
-    <li><a href="#title-1-5" class="w3-bar-item w3-button">Summary</a></li>
-  </ul>
-  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
-  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
-</div>
+    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+        <a href="./index.html"><h3 class="w3-bar-item">人工智能</h3></a>
+        <a href="./lec2.html" class="w3-bar-item w3-button w3-large">智能体与环境</a>
+        <a href="./lec3.html" class="w3-bar-item w3-button w3-large">盲搜</a>
+        <a href="./lec4.html" class="w3-bar-item w3-button w3-large">启发式搜索</a>
+        <a href="./lec5.html" class="w3-bar-item w3-button w3-large">局部搜索</a>
+        <a href="./lec6.html" class="w3-bar-item w3-button w3-large">对抗搜索</a>
+        <ul>
+
+            <li><a href="#title-1-1" class="w3-bar-item w3-button">博弈游戏</a></li>
+            <li><a href="#title-1-2" class="w3-bar-item w3-button">对抗搜索(Adversarial Search)</a></li>
+            <li><a href="#title-1-3" class="w3-bar-item w3-button">Minimax优化</a></li>
+            <li><a href="#title-1-4" class="w3-bar-item w3-button">资源限制</a></li>
+        </ul>
+        <a href="./lec7.html" class="w3-bar-item w3-button w3-large">期望最大搜索</a>
+        <a href="./lec8.html" class="w3-bar-item w3-button w3-large">马尔可夫决策过程</a>
+    </div>
 
 <!-- Page Content -->
 <div style="margin-left:15%">
     <div class="w3-container w3-teal">
-      <h1>Adversarial Search and Game Trees</h1></div>
-      <div class="w3-container">
-        <font size="6">
-          <h2>Game Playing State-of-the-Art</h2>
-        </font>
-        <img src="./image/lec6-2.png" alt="" style="width:40%;position: relative; left: 300px;">
+      <h1 id="title-1-1">博弈游戏</h1></div>
+    <div class="w3-container">
+        <h2 style="position: relative;">
+            <font size="6">博弈类型</font>
+        </h2>
         <font size="5">
-      <ul>
-        <li>
-          Checkers: 1950: First computer player.  1994: First computer champion: Chinook ended 40-year-reign of human champion Marion Tinsley using complete 8-piece endgame. 2007: Checkers solved!
-        </li>
-        <li>
-          Chess: 1997: Deep Blue defeats human champion Gary Kasparov in a six-game match.  Deep Blue examined 200M positions per second, used very sophisticated evaluation and undisclosed methods for extending some lines of search up to 40 ply.  Current programs are even better, if less historic.
-        </li>
-        <li>
-          Go: 2016: Alpha GO defeats human champion. Uses Monte Carlo Tree Search, learned evaluation function. 
-        </li>
-        <li>Pacman</li>
-      </ul>          
+            <p>博弈理论中有许多种类型的博弈，其中包括但不限于：</p>
+
+            <ul>
+                <li>零和博弈（Zero-sum game）</li>
+
+                <li>非零和博弈（Non-zero-sum game）</li>
+
+                <li>合作博弈（Cooperative game）</li>
+
+                <li>非合作博弈（Non-cooperative game）</li>
+
+                <li>零和非合作博弈（Zero-sum non-cooperative game）</li>
+
+                <li>部分合作博弈（Partially cooperative game）</li>
+
+                <li>集体行动博弈（Collective action game）</li>
+
+                <li>概率博弈（Stochastic game）</li>
+            </ul>
+            <p>这些是博弈理论中常见的一些类型。每种类型都有其独特的特征和规则。</p>
+        </font>
+        <font size="5">
+            <h2 style="position: relative;">
+                <font size="6">
+                    确定性博弈
+                </font>
+            </h2>
+            <p>
+                Many possible formalizations, one is:
+            </p>
+            <font size="5">
+                <ul>
+                    <li>状态: S (从s0开始)</li>
+
+                    <li>玩家: P={1...N}（通常轮流进行）</li>
+
+                    <li>行动: A（可能取决于玩家/状态）</li>
+
+                    <li>转移函数: SxA→S</li>
+
+                    <li>终止测试: S→{true,false}</li>
+
+                    <li>终止效用: SxP→R</li>
+
+
+                </ul>
+            </font>
+            <p>
+                策略就是一个博弈者的解决方法: S→A
+            </p>
+            <h2 style="position: relative;">
+                <font size="6">
+                    零和博弈
+                </font>
+            </h2>
+            <ul>
+                <font size="5">
+                    <li>agent具有相反的效用（对结果的价值）</li>
+
+                    <li>让我们考虑一个单一价值，一个最大化，另一个最小化</li>
+
+                    <li>对抗性，纯竞争</li>
+                    <br>
+                </font>
+            </ul>
+            <h2 style="position: relative;">
+                <font size="6">广义博弈</font>
+            </h2>
+            <li>智能体有独立的效用（对结果的价值评估）</li>
+            <li>可能存在合作、中立、竞争等情况</li>
+            <li>稍后讨论非零和博弈</li>
+            <br>
         </font>
 
-    <div class="w3-container w3-teal">
-      <h1 id="title-1-1">Adversarial Games</h1>
-    </div>
-    <div class="w3-container"> 
-      <h2 style="position: relative;">
-        <br>
-        <font size="6">Types of Games</font></h2>
-      <img src="./image/lec6-3.png" alt="" style="width:40%;position: relative; left: 280px;">
-    <font size="5">
-      <h2 style="position: relative;">
-        <font size="6">Deterministic Games</font></h2><img src="./image/lec6-4.png" alt="" style="width:30%;position: relative;float:right;margin: 20px;">
-      <p>Many possible formalizations, one is:
-      </p>
-      
-      <ul>
-        <font size="5">
-          <li>States: S (start at s0)</li>
-          <li>Players: P={1...N} (usually take turns)</li>
-          <li>Actions: A (may depend on player / state)</li>
-          <li>Transition Function: SxA→S</li>
-          <li>Terminal Test: S→{true,false}</li> 
-          <li>Terminal Utilities: SxP→R</li>
-        <br>
-        </font>
-      </ul>
-        <p>Solution for a player is a policy: S→A
-        </p>
-        <h2 style="position: relative;">
-          <font size="6">Zero-Sum Games</font></h2>
-        <img src="./image/lec6-5.png" alt="" style="width:30%;position: relative; left: 280px;">
-        <ul>
-          <font size="5">
-            <li>Agents have opposite utilities (values on outcomes)</li>
-            <li>Let us think of a single value that one maximizes and the other minimizes</li>
-            <li>Adversarial, pure competition</li>
-          <br>
-          </font>
-        </ul>
-        <h2 style="position: relative;">
-          <font size="6">General Games</font></h2>
-          <img src="./image/lec6-6.png" alt="" style="width:50%;position: relative; left: 280px;">
-          <li>Agents have independent utilities (values on outcomes)</li>
-          <li>Cooperation, indifference, competition, and more are all possible</li>
-          <li>More later on non-zero-sum games</li>
-          <br>
-  </font>
-    
     </div>    
 <div class="w3-container w3-teal">
 
-  <h1 id="title-1-2">Adversarial Search</h1>
+    <h1 id="title-1-2">对抗搜索(Adversarial Search)</h1>
 </div>
 <div class="w3-container"> 
 <font size="5">
-  <h2>Single-Agent Trees</h2>
-  <img src="./image/lec6-7.png" alt="" style="width:50%;position: relative; left: 280px;">
-  <h2>Value of a State</h2>
+    <h2><b>单智能体树(single agent tree)</b></h2>
+    <p>
+        单智能体树是指在博弈中，单个智能体（玩家）考虑其自身行动选择的情况下所形成的搜索树。在单智能体树中，智能体只需考虑自己的最佳行动，而不需要考虑对手的行动选择。
+
+        这种单智能体树通常用于博弈中的训练、规划或决策过程，以帮助智能体在面对不同情况时选择最佳的行动策略。与对抗搜索中考虑对手行动选择的博弈树不同，单智能体树仅考虑智能体自身行动的影响，是一种简化的博弈模型。
+    </p>
+    <p><font style="color: coral">状态值</font>指的是每个状态节点在智能体考虑其自身行动选择时的评估值。这些状态值通常代表着在该状态下智能体能够达到的预期效用或收益。智能体在单智能体树中会根据这些状态值来评估每个状态节点的优劣，从而做出最佳的决策。</p>
   <img src="./image/lec6-8.png" alt="" style="width:50%;position: relative; left: 280px;">
-  <h2>Adversarial Game Trees</h2>
+  <h2><b>对抗博弈树(Adversarial Game Trees)</b></h2>
+  <p>在对抗博弈树中，每个节点代表一个可能的游戏状态，而每个边则代表玩家的一个行动选择。这种树结构允许玩家在不同的决策点上考虑各种可能的行动，并根据对手可能的反应来制定策略。</p>
   <img src="./image/lec6-9.png" alt="" style="width:50%;position: relative; left: 280px;">
 <h2 style="position: relative;">
-  <font size="6">Tic-Tac-Toe Game</font> 
+  <font size="6">井字棋游戏</font> 
+  <p>通过在水平、垂直或对角线上连成一排相同标记来获得博弈的胜利吧！</p>
   <div>
     <iframe src="./tic_tac_toe/index.html" style="width:100%; height:600px;"></iframe>
   </div>
-  <p>Game Tree</p>
+  <p>
+      井字棋博弈树
+  </p>
   <img src="./image/lec6-10.png" alt="" style="width:70%;position: relative; left: 280px;">
 
 </h2>
@@ -132,169 +152,146 @@
 </div>
 <div class="w3-container"> 
 <h2 style="position: relative;">
-  <font size="6">Adversarial Search (Minimax)</font>
+  <font size="6">对抗搜索 (Minimax)</font>
 </h2>
-<img src="./image/lec6-11.png" alt="" style="width:30%;position: relative; left: 380px;">
-<font size="5"><p>Deterministic, zero-sum games</p></font>
-  <ul>
-    <font size="5">
-      <li>Tic-tac-toe, chess, checkers</li>
-      <li>One player maximizes result</li>
-      <li>The other minimizes result</li>
-    </font>
-  </ul>
-  <br>
-  <font size="5"><p>Minimax search</p></font>
-  <ul>
-    <font size="5">
-      <li>A state-space search tree</li>
-      <li>Players alternate turns</li>
-      <li>Compute each node’s minimax value: the best achievable utility against a rational (optimal) adversary</li>
-    </font>
-  </ul>
-<h2 style="position: relative;">
-  <font size="6">Minimax Implementation (Dispatch)</font> 
-</h2>
-<img src="./image/lec6-12.png" alt="" style="width:70%;position: relative; left: 180px;">
+<font size="5">
+    <p>MiniMax表示最小化(Min)对手可能的最大收益，同时最大化(Max)自己可能的最大收益。Minimax是对抗搜索中常用的一种算法，用于确定博弈树中每个节点的最佳行动选择。在Minimax算法中，玩家会假设对手会采取最有利于对手的行动，并选择对自己最有利的行动，以最大化自己的收益或最小化可能的损失。</p>
+</font>
+
+  <font size="5"><p>极小化极大搜索(Minimax search)</p><img src="./image/lec6-11.png" alt="" style="position:inherit; right: 0; margin-right: 300px; width: 15%; "></font>
+  <font size="5">
+<ul>
+    
+        <li>状态空间搜索树</li>
+        <li>所有玩家轮流进行</li>
+        <li>计算每个节点的Minimax值：对抗理性（最优）对手所能达到的最佳效用</li>
+
+</ul></font>
+</div>
+<div class="w3-container">
+
+    <h2 style="position: relative;">
+        <font size="6">
+            Minimax实现(调度)
+        </font>
+    </h2>
+    <img src="./image/lec6-12.png" alt="" style="width:50%;position: relative; left: 180px;">
 </div> 
 <div class="w3-container w3-teal">
-  <h1 id="title-1-3">Resource Limits</h1>
-</div>    
-<br>
-<div class="w3-container"> 
-  <h2 style="position: relative;">
-    <font size="6">Minimax</font>
-  </h2>
-  <font size="5">
-
-  <p>Minimax Example</p>
-  <img src="./image/lec6-13.png" alt="" style="width:50%;position: relative; left: 280px;">
-
-  <p>Minimax Pruning</p>
-  <img src="./image/lec6-14.png" alt="" style="width:50%;position: relative; left: 280px;">
-
-  </font>
-
-  <h2 style="position: relative;">
-    <font size="6">Alpha-Beta</font> 
-  </h2>
-  <h3>Alpha-Beta Pruning</h3>
-  <font size="5">
-    <p>General configuration (MIN version)</p>
-    <ul>
-      <li>We’re computing the MIN-VALUE at some node n</li>
-      <li>We’re looping over n’s children</li>
-      <li>n’s estimate of the childrens’ min is dropping</li>
-      <li>Who cares about n’s value?  MAX</li>
-      <li>Let a be the best value that MAX can get at any choice point along the current path from the root</li>
-      <li>If n becomes worse than a, MAX will avoid it, so we can stop considering n’s other children (it’s already bad enough that it won’t be played)</li>
-    </ul>
-    <p>MAX version is symmetric</p>
-  
-  <h3>Alpha-Beta Implementation</h3>
-  <img src="./image/lec6-15.png" alt="" style="width:50%;position: relative; left: 280px;">
-  <br>
-  <p>Try using python code</p>
-  <div>
-    <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
-  </div></font>
-  <h3>Alpha-Beta Pruning Properties</h3>
-  <img src="./image/lec6-16.png" alt="" style="width:35%;position: relative; left: 280px;">
-  <font size="5">
-    <p>This pruning has no effect on minimax value computed for the root!
-    </p>
-    <p>Values of intermediate nodes might be wrong
-    </p>
-    <ul>
-      <li>Important: children of the root may have the wrong value</li>
-      <li>So the most naïve version won’t let you do action selection</li>
-
-    </ul>
-    <p>Good child ordering improves effectiveness of pruning
-    </p>
-    <p>With “perfect ordering”:
-    </p>
-    <ul>
-      <li>Time complexity drops to O(b^(m/2))</li>
-      <li>Doubles solvable depth!</li>
-      <li>Full search of, e.g. chess, is still hopeless…
-</li>
-    </ul>
-    <p>This is a simple example of metareasoning (computing about what to compute)
-    </p>
-  </font>
-  <h3>Resource limits</h3>
-  <img src="./image/lec6-17.png" alt="" style="width:35%;position: relative; left: 280px;">
-
-  <font size="5">
-    <p>Problem: In realistic games, cannot search to leaves!
-    </p>
-    <p>Solution: Depth-limited search
-    </p>
-    <ul>
-      <font size="5">
-        <li>Instead, search only to a limited depth in the tree</li>
-        <li>Replace terminal utilities with an evaluation function for non-terminal positions</li>
-        
-        <br>
-      </font>
-    </ul>
-    <p>Example:
-    </p>
-    <ul>
-      <font size="5">
-        <li>Suppose we have 100 seconds, can explore 10K nodes / sec</li>
-        <li>So can check 1M nodes per move</li>
-        <li>α-βreaches about depth 8 – decent chess program</li>
-        
-      </font> 
-    </ul>
-    <p>Guarantee of optimal play is gone
-    </p>
-    <p>More plies makes a BIG difference
-    </p>
-    <p>Use iterative deepening for an anytime algorithm
-    </p>
-  </font>
-  
-  </div> 
-<div class="w3-container w3-teal">
-  <h1 id="title-1-4">Evaluation Functions</h1>
+  <h1 id="title-1-3">Minimax优化</h1>
 </div>    
 <br>
 <div class="w3-container">
-  <img src="./image/lec6-18.png" alt="" style="width:80%;position: relative; left: 80px;">
-  <br>
-<br>
-<font size="6">
-<p>Pacman with Depth-2 Lookahead</p>
-<video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
-  <source src="./video/vedio6-1.mp4" type="video/mp4"></source>
-</video>
-<br>
-<p>Pacman with Depth-10 Lookahead</p>
-<video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
-  <source src="./video/video6-2.mp4" type="video/mp4"></source>
-</video>
-<br>
-<p>Video of Demo Thrashing (d=2)</p>
-<video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
-  <source src="./video/vedio6-3.mp4" type="video/mp4"></source>
-</video>
-<br>
-<p>Why Pacman Starves</p>
-<img src="./image/lec6-19.png" alt="" style="width:80%;position: relative; left: 80px;">
-<br>
-<p>Video of Demo Thrashing -- Fixed (d=2)</p>
-<video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
-  <source src="./video/vedio6-4.mp4" type="video/mp4"></source>
-</video>
-<br>
+    <font size="5">
+        <p>在资源有限的情况下，可以考虑使用<font style="color: red">Alpha-Beta剪枝算法</font>来优化Minimax算法的性能。Alpha-Beta剪枝算法可以帮助减少搜索空间，从而提高搜索效率，特别是在资源有限的情况下。</p>
+    </font>
+    <img src="./image/6-12.png" alt="" style="width:100%;">
 
-</font>
+
+    </font>
+
+    <h2 style="position: relative;">
+        <font size="6">Alpha-Beta</font>
+    </h2>
+    <h2>Alpha-Beta剪枝</h2>
+    <font size="5">
+        <ul>
+            <li>从根节点开始，沿着博弈树递归向下搜索。</li>
+            <li>在每一层交替应用最大化和最小化规则，根据当前节点是最大层还是最小层来确定。</li>
+            <li>递归地计算每个节点的值，同时维护Alpha和Beta值。</li>
+            <li>当搜索到达叶子节点时，返回叶子节点的值。</li>
+            <li>在父节点处，根据当前节点是最大层还是最小层，更新父节点的值，并更新父节点的Alpha或Beta值。</li>
+            <li>当Alpha值大于等于Beta值时，进行剪枝，不再搜索当前节点的子节点。</li>
+            <li>继续向上回溯，更新祖先节点的值和Alpha-Beta值，直到回溯到根节点。</li>
+        </ul>
+
+        <h2>Alpha-Beta 实现</h2>
+        <ul>
+            <li>
+                α: MAX 在通往root节点上的最佳选择
+            </li>
+            <li>
+                β: MIN  在通往root节点上的最佳选择
+            </li>
+        </ul>
+        <img src="./image/lec6-15.png" alt="" style="width:60%;position: relative; left: 280px;">
+        <br>
+        <p>试试使用python编写代码：</p>
+        <div>
+            <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
+        </div>
+    </font>
+    <h2>Alpha-Beta剪枝性质</h2>
+    <font size="5">
+        <li><b>对根节点影响有限</b>：Alpha-Beta剪枝算法的剪枝过程不会影响根节点计算得到的极小极大值，因为根节点的值是通过递归计算得到的，并不受剪枝的影响。</li>
+
+        <li><b>中间节点可能存在错误值</b>：由于Alpha-Beta剪枝算法的特性，中间节点的值可能存在错误，因为在剪枝过程中可能会丢失一些信息，导致节点值不准确。</li>
+
+        <li><b>根节点子节点可能有错误值</b>：由于中间节点可能存在错误的值，根节点的子节点也可能受到影响，可能会导致选择错误的动作。</li>
+
+        <li><b>子节点排序重要性</b>：良好的子节点排序可以提高Alpha-Beta剪枝算法的效率，更有可能剪枝更多的分支，从而减少搜索空间。</li>
+
+        <li><b>“完美的排序性”</b>：如果存在完美的节点排序，即能够先搜索到最优的分支节点，时间复杂度可以降低至O(b^(m/2))，能够解决深度问题，但现实中实现完美排序性是非常困难的。</li>
+    </font>
+    <div class="w3-container w3-teal">
+        <h1 id="title-1-4">资源限制</h1>
+    </div>
+    <font size="5">
+        <p>
+            在实际博弈中，由于搜索空间庞大，Alpha-Beta剪枝算法无法一直搜索到叶子节点，通常需要设置<font style="color:blue">搜索深度限制(depth-limited)</font>来解决这个问题。
+        </p>
+        <p>Alpha-Beta剪枝算法中设置搜索深度限制的步骤：</p>
+        <ul>
+            <font size="5">
+                <li><b>确定搜索深度限制：</b>根据问题的复杂度和计算资源的限制，确定一个合适的最大搜索深度。这可以是固定的深度值，也可以根据时间或其他因素进行动态调整。</li>
+                <li><b>递归搜索：</b>从根节点开始，按照Alpha-Beta剪枝算法的规则递归向下搜索博弈树。在每一层节点处，检查是否达到了设定的搜索深度限制。</li>
+                <li><b>判断是否停止搜索：</b>当搜索到达设定的最大深度时，停止继续向下搜索，返回当前节点的估值。这个估值可以是启发式函数给出的值，也可以是局面评估函数的值。</li>
+                <li><b>返回估值：</b>将当前节点的估值传递回父节点，并根据Alpha-Beta算法的规则更新祖先节点的值和Alpha-Beta值。</li>
+                <li><b>继续递归回溯：</b>继续向上回溯，更新祖先节点的值和Alpha-Beta值，直到回溯到根节点。</li>
+                <br>
+
+        </ul>
+        <p>
+            对于一个不错的国际象棋程序来说，假设我们有100秒的时间，每秒可以探索10K个节点，所以每次移动可以检查1M个节点，即达到大约depth=8。
+        </p>
+    </font>
+
+    <div class="w3-container">
+    </div>
+    <font size="6">
+        评估函数(Evaluation Functions)
+    </font>
+    <p>在一个设置了最大搜索深度限制的情况下，评估函数扮演着非常重要的角色。评估函数用于在达到最大搜索深度时对当前局面进行评估，给出一个估值作为计算机做出决策的依据。</p>
+    <ul>
+        <li>理想情况：返回当前位置的实际minimax值</li>
+        <li>实际情况：通常是加权线性特征和：Eval(s)=w<sub>1</sub>f<sub>1</sub>(s)+w<sub>2</sub>f<sub>2</sub>(s)+...+w<sub>n</sub>f<sub>n</sub>(s)</li>
+    </ul>
+    <h2>深度和评估函数的trade-off:</h2>
+    <p>
+        评估函数总是不完美的。随着搜索深度的增加，<b>评估函数的质量会变得次要</b>，因为搜索深度决定了计算机在博弈树中所能触及的局面信息的丰富程度。当搜索深度足够深时，即使评估函数不够完美，计算机也有可能找到更优的解决方案。
+    </p><p>
+        <b>在权衡特征复杂性和计算复杂性时，需要谨慎考虑。</b>增加特征的复杂性可能会提高评估函数的准确性，但也会增加计算量和复杂度。在实际应用中，需要根据实际情况和资源限制来平衡特征的复杂性和计算的效率，以找到一个合适的折衷方案。
+    </p>
+    <font size="6">
+        <p>
+            Lookahead深度为2的Pacman
+        </p>
+        <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+            <source src="./video/vedio6-1.mp4" type="video/mp4"></source>
+        </video>
+        <br>
+        <p>
+            Lookahead深度为10的Pacman
+        </p>
+        <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+            <source src="./video/video6-2.mp4" type="video/mp4"></source>
+        </video>
+        
+
+    </font>
 
 </div>
-<br>
+</div>
 
 </body>
 </html>

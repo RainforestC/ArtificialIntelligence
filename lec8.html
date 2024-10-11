@@ -4,433 +4,487 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>search</title>
-  <script src="https://d3js.org/d3.v5.min.js"></script>
-  <link rel="stylesheet" href="./css/Romania.css">
-  <link rel="stylesheet" href="./css/demo2.css">
-  <link rel="stylesheet" href="./css/demo7.css">
-  <link rel="stylesheet" href="./css/demo8.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>  
-  <script src="./js/DFS_BFS.js"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <link rel="stylesheet" href="./css/Romania.css">
+    <link rel="stylesheet" href="./css/demo2.css">
+    <link rel="stylesheet" href="./css/demo7.css">
+    <link rel="stylesheet" href="./css/demo8.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script src="./js/DFS_BFS.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
-  <a href="./index.html"><h3 class="w3-bar-item">Artificial Intelligence</h3></a>
-  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">Agents and environments</a>
-  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">Uninformed Search</a>
-  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">Informed Search</a>
-  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
-  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
-  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
-  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
-  <ul>
-    <li><a href="#title-8-1" class="w3-bar-item w3-button">Markov Decision Process</a></li>
-    <li><a href="#title-8-2" class="w3-bar-item w3-button">Example: Grid World</a></li>
-    <li><a href="#title-8-3"class="w3-bar-item w3-button">Policies</a></li>
-    <li><a href="#title-8-4" class="w3-bar-item w3-button">Example: Racing MDP</a></li>
-    <li><a href="#title-8-5" class="w3-bar-item w3-button">Utilities</a></li>
-    <li><a href="#title-8-6" class="w3-bar-item w3-button">Solving: MDPs</a></li>
-    <li><a href="#title-8-7" class="w3-bar-item w3-button">Value Iteration</a></li>
-    <li><a href="#title-8-8" class="w3-bar-item w3-button">Policy Extraction</a></li>
-    <li><a href="#title-8-9" class="w3-bar-item w3-button">Policy Iteration</a></li>
-    <li><a href="#title-8-10" class="w3-bar-item w3-button">Comparison</a></li>
-  </ul>
-</div>
-
-
-<div style="margin-left:15%">
-    <div class="w3-container w3-teal">
-        <h1 id="title-8-1">Markov Decision Process</h1>
-    </div>
-    <font size="5">
-        <p>MDP : the way of formalizing the idea of non-deterministic search which is search when your actions outcomes are uncertain.</p>
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+        <a href="./index.html"><h3 class="w3-bar-item">人工智能</h3></a>
+        <a href="./lec2.html" class="w3-bar-item w3-button w3-large">智能体与环境</a>
+        <a href="./lec3.html" class="w3-bar-item w3-button w3-large">盲搜</a>
+        <a href="./lec4.html" class="w3-bar-item w3-button w3-large">启发式搜索</a>
+        <a href="./lec5.html" class="w3-bar-item w3-button w3-large">局部搜索</a>
+        <a href="./lec6.html" class="w3-bar-item w3-button w3-large">对抗搜索</a>
+        <a href="./lec7.html" class="w3-bar-item w3-button w3-large">期望最大搜索</a>
+        <a href="./lec8.html" class="w3-bar-item w3-button w3-large">马尔可夫决策过程</a>
         <ul>
-            <li>An MDP is defined by:</li><img src="./image/8-3.png", alt=""  style="float:right; width:25%;">
-            <ul>
-                <li>A set of states s ∈ S</li>
-                <li>A set of actions a ∈ A</li>
-                <li>A transition function T(s, a, s’)</li>
-                <ul>
-                    <li>Probability that a from s leads to s’, i.e., P(s’| s, a)</li>
-                    <li>Also called the model or the dynamics</li>
-                </ul>
-                <li>A reward function R(s, a, s’)</li>
-                <ul><li>Sometimes just R(s) or R(s’)</li></ul>
-                <li>A start state</li>
-                <li>Maybe a terminal state</li>
-            </ul>
+            <li><a href="#title-8-1" class="w3-bar-item w3-button">马尔可夫决策过程(Markov Decision Process)</a></li>
+            <li><a href="#title-8-2" class="w3-bar-item w3-button">例子：网格世界</a></li>
+            <li><a href="#title-8-3" class="w3-bar-item w3-button">策略</a></li>
+            <li><a href="#title-8-4" class="w3-bar-item w3-button">例子：竞速</a></li>
+            <li><a href="#title-8-5" class="w3-bar-item w3-button">效用(Utilities)</a></li>
+            <li><a href="#title-8-6" class="w3-bar-item w3-button">折扣法</a></li>
+            <li><a href="#title-8-7" class="w3-bar-item w3-button">价值迭代</a></li>
+            <li><a href="#title-8-8" class="w3-bar-item w3-button">策略提取</a></li>
+            <li><a href="#title-8-9" class="w3-bar-item w3-button">策略迭代</a></li>
+            <li><a href="#title-8-10" class="w3-bar-item w3-button">对比总结</a></li>
         </ul>
-    </font>
-    <h2 style="position: relative;">
-        <font size="5">What is Markov about MDPs?</font> 
-    </h2>
-    <ul>
-        <font size="5">
-            <li>“Markov” generally means that given the present state, the future and the past are independent</li>
-            <li>For Markov decision processes, “Markov” means action outcomes depend only on the current state:
-                P(St+1 = s' | St=st,At=at,St-1=st-1,At-1=at-1,..., S₀=s₀) = P(St+1 = s' | St=st,At=at)</li>
-            <li>This is just like search,the probability distribution over your outcomes depends only on the current state and action , not on the whole histroy of how you got there.</li>
-        </font>
-
-    </ul>
-    <font size="5">
-        <p>So this is important property in MDP is to make sure that you define your transition function and your state in such a way that the transition probabilities depend only on the current state and action.</p>
-
-    </font>
-</div>
-
-
-<div style="margin-left:15%">
-    <div class="w3-container w3-teal">
-        <h1 id="title-8-2">Example: Grid World</h1>
     </div>
-    <ul>
-        <font size="5">
-        <p style="color: blue;">A maze-like problem</p>
-        <li>The agent lives in a grid</li>
-        <li>Walls block the agent’s path</li>
-        <br><img src="./image/8-4.png", alt=""  style="float:right; width:35%;">
-        <p style="color: blue;">Noisy movement: actions do not always go as planned</p>
-        <li>80% of the time, the action North takes the agent North (if there is no wall there)</li>
-        <li>10% of the time, North takes the agent West; 10% East</li>
-        <li>If there is a wall in the direction the agent would have been taken, the agent stays put</li>
-        <li>similar rules for the other 3 directions</li>
-        <br>
-        <p style="color: blue;">The agent receives rewards</p>
-        <li>Small “living” reward each step (can be negative).this is sometimes called a living reward or a living penalty based on whether it's positive or negative.</li>
-        <li>Big rewards come at the end (good or bad).terminal utilities, shown as the plus 1 and minus 1(also the exit to game end).</li>
-        <br>
-        <p style="color: blue;">Goal: maximize sum of rewards</p>
-        </font>
-    </ul>
-</div>
 
-<div style="margin-left:15%">
-    <div class="w3-container w3-teal">
-        <h1 id="title-8-3">Policies</h1>
-    </div>
-    <font size="5">
-        <p>For MDPs, we want an optimal policy π* : S → A</p>
 
-        <ul>
-        <li>A policy π gives an action for each state, like a recommendation action</li>
-        <li>An optimal policy is one that maximizes expected utility if followed</li>
-        <li>An explicit policy defines a reflex agent</li>
-    </ul>
-    </font>
-</div>
-
-<div style="margin-left:15%">
-<div class="w3-container w3-teal">
-    <h1 id="title-8-4">Example: Racing MDP</h1>
-  </div>
-  
-  <div class="w3-container">
-    <img src="./image/8-5.png" alt="" style="width:70%;position: relative; left: 280px;">
-    <font size="5">
-        <p>Definition:</p>
-        <ul>
-            <li>A robot car wants to travel far, quickly</li>
-            <li>Three states: <font color="#00B0F0">Cool</font>, <font color="#7E2727">Warm</font>, Overheated</li>
-            <li>Two actions: <font color="#333399">Slow</font>, <font color="#C00000">Fast</font></li>
-             <li>Going faster gets double reward</li>
-        </ul>
-        <p>Any MDP is defining a search tree. So if you're in some particular state , for example if you're in the state where the car is cool, you have 2 actions: slow or fast.        </p>
-        </font>
-        <img src="./image/MDP_Search_Tree.gif" alt="" style="width:70%;position: relative; left: 280px;">
-        <font size="5">
-            <p>Each MDP state projects an expectimax-like search tree.</p>
-            <img src="./image/8-7.png" alt="" style="width:70%;position: relative; left: 280px;">
-
-            <p>But we’re doing way too much work with expectimax! The problems are:</p>
-            <ul>
-                <li>States are repeated</li>
-                <!-- <font style="color:blue">Idea: Only compute needed quantities once</font> -->
-                <li>Tree goes on forever</li>
-                <!-- <font style="color:blue">Idea: Do a depth-limited computation, but with increasing depths until change is small</font> -->
-            </ul>
-            <p>To Solve these problems, Let's learn about utilities first.</p>
-        </font>
-    </div>
-</div>
-
-<div style="margin-left:15%">
+    <div style="margin-left:15%">
         <div class="w3-container w3-teal">
-            <h1 id="title-8-5">Utilities</h1>
+            <h1 id="title-8-1">马尔可夫决策过程(Markov Decision Process)</h1>
         </div>
-        <font size="5">
-            <p>Principle of maximum expected utility: A rational agent should chose the action that <span class="red-text" >maximizes its expected utility, given its knowledge</span>.</p>
-            <p>The purpose of utilities is:</p><img src="./image/8-1.png", alt=""  style="float:right; width:40%;">
-            <ul>
-                <li>For worst-case minimax reasoning, terminal function scale doesn’t matter</li>
+        <div class="w3-container">
+            <font size="5">
+                <p>马尔可夫决策过程(Markov Decision Process，MDP)：一种数学框架，用于描述具有随机性和决策的序贯过程。在MDP中，我们考虑一个智能体与环境进行交互的情况，智能体根据环境的状态和奖励来做出决策，以最大化长期累积奖励。</p>
+                <p>MDP的要素定义如下:</p>
                 <ul>
-                    <li>We just want better states to have higher evaluations (get the ordering right)</li>
-                    <li>We call this insensitivity to monotonic transformations</li>
+                    <li>状态空间（State Space）：定义系统可能处于的所有状态s的集合S，即s ∈ S</li>
+                    <li>动作空间（Action Space）：定义智能体可以执行的所有可能动作a的集合A，即a ∈ A</li>
+                    <li>转移函数 （Transition Function）：描述系统在执行某个动作后从一个状态转移到另一个状态的概率 T(s, a, s’)/P(s’| s, a)</li>
+                    <li>奖励函数（Reward Function）：定义智能体在每个状态下执行某个动作后获得的即时奖励，表示为R(s, a, s’)</li>
+                    <ul><li>有时候奖励函数仅和状态有关，即R(s) 或 R(s’)</li></ul>
+                    <li>起始状态</li>
+                    <li>终止状态（可选）</li>
                 </ul>
-                <li>For average-case expectimax reasoning, we need magnitudes to be meaningful</li>
-            </ul>
-            <p style="color:red">Utilities are functions from outcomes (states of the world) to real numbers that describe an agent’s preferences.</p>
-        </font>  
-        <img src="./image/8-2.png", alt=""  style="float:right; width:40%;">
-    
-        <font size="5">
-        <p>Where do utilities come from?</p>
-        <ul>
-            <li>In a game, may be simple (+1/-1)</li>
-            <li>Utilities summarize the agent’s goals</li>
-            <li>Theorem: any “rational” preferences can be summarized as a utility function</li>
-        </ul>
-        <p>We hard-wire utilities and let behaviors emerge.</p>
-        <ul>
-            <li>Why don’t we let agents pick utilities?</li>
+            </font>
+            <h2 style="position: relative;">
+                <font size="5"><b>马尔可夫性</b></font>
+            </h2>
             <ul>
-                <li>vacuum cleaner example: the agent would like to do nothing ,and so easy to do nothing.</li>
+                <font size="5">
+                    <li>马尔可夫性是指一个随机过程具有无记忆性的性质，即未来的状态只依赖于当前状态，与过去的状态无关。</li>
+                    <li>
+                        MDP的马尔可夫性体现在状态转移过程中。具体来说，马尔可夫决策过程中的马尔可夫性质表示当前状态的未来发展只依赖于当前状态和当前所选择的动作，而与过去的状态序列无关。
+                    </li>
+                    <li>
+                        马尔可夫性使得马尔可夫决策过程具有记忆缺失的性质，即系统在做决策时只需考虑当前状态和动作，而不需要记住整个历史状态序列。这种性质简化了问题的建模和求解，使得在求解问题时可以使用值函数和策略来指导智能体做出最优决策。
+                    </li>
+                </font>
+
             </ul>
-        </ul>
-        <ul>
-            <li>Why don’t we prescribe behaviors?</li>
-            <ul>
-                <li>it's very hard to write down , complicated and context-defpendent.</li>
-            </ul>
-        </ul>
-        <p>In a MDP the rewards come to you step-by-step , we need to figure out what our utility function acutally is. In the simplest case you just add up the rewards but it can be little more subtle than that.</p>
-        <p>What preferences should an agent have over reward sequences? More or less? Now or later?</p>
-        <p>We use <span style="color:blue">discount</span> to express preferences over reward sequences.</p>
-        </font>
-    </div>
-    
-<div style="margin-left:15%">
-        <div class="w3-container w3-teal">
-            <script src="./js/discount.js"></script>
-            <h1 id="title-8-5">Discounting</h1>
+
         </div>
-        <font size="5">
-            <p>It’s reasonable to maximize the sum of rewards. And it’s also reasonable to prefer rewards now to rewards later. So the solution is: <span style="color:blue">values of rewards decay exponentially</span> .</p>
-        <img src="./image/8-8.png" alt="" style="width:50%;position: relative; left: 280px;">
-        
-        <p>How to discount?</p>
-        
-        <ul>
-            Each time we descend a level, we multiply in the discount once</ul>
-        <p>Why discount?</p>
-        <ul>
-            <li>Sooner rewards probably do have higher utility than later rewards</li>
-            <li>Also helps our algorithms converge</li>
-        </ul>
-    </font>
-    
-    <font size="5">
-    <p>If the agent liked A better than B now, it should like it better shifted into the future as well and vice versa.</p>
-    <ul>
-        <li>Theorem: if we assume stationary preferences:</li>
-        <ul><li>a₁,a₂,...] ≻ [b₁,b₂,...] <=> [r, a₁,a₂,...] ≻ [r, b₁,b₂,...]</li></ul>
-        <li>Then: there are only two ways to define utilities</li>
-        <ul>
-            <li>Additive utility: U( [r₀,r₁,r₂,...] ) = r₀ + r₁ + r₂ + ...</li>
-            <li>Discounted utility: U( [r₀,r₁,r₂,...] ) = r₀ + γ·r₁ + γ²·r₂ + ...</li>
-        </ul>
-    </ul>
-    <h2 style="position: relative;">
-        <font size="6">Try a game to compute discounted utility:</font> 
-    </h2>
-    <font size="5">
-        <p>Discount: <span id="discount"></span></p>
-    <p>Sequence: <span id="sequence"></span></p>
-    <input type="text" id="userAnswer" placeholder="Please keep 2 decimal places" class="long-input"> 
-    <br>
-    <button onclick="checkAnswer()">submit</button>
-
-    <button onclick="calculateResult()">generate new discount & sequence</button>
-    <br>
-    <br>
-    </font>
-    
-    <p style="color:blue"> What if the game lasts forever? Do we get infinite rewards?</p>
-    <p>SOLUTIONS:</p><img src="./image/8-9.png", alt=""  style="float:right; width:30%;">
-    <ul>
-        <li>Finite horizon: (similar to depth-limited search)</li>
-        <ul>
-            <li>Terminate episodes after a fixed T steps (e.g. life)</li>
-            <li>Gives nonstationary policies ( π depends on time left)</li>
-        </ul>
-        <li>Discounting: use 0 < γ < 1</li>
-        <ul>
-            <li>U( [r₀,r₁,r₂,...] ) = r₀ + γ·r₁ + γ²·r₂ + ... <= Rmax/(1-γ)</li>
-            <li>Smaller γ means smaller “horizon” – shorter term focus</li>
-        </ul>
-        <li>Absorbing state: guarantee that for every policy, a terminal state will eventually be reached (like “overheated” for racing)</li>
-    </ul>
-    </font>
-</div>    
+        </div>
 
 
-<div style="margin-left:15%">
-    <div class="w3-container w3-teal">
-        <h1 id="title-8-6">Solving: MDPs</h1>
-    </div>
-    <font size="5">
-        <p>In "Example: Racing MDP", We have put forward two problems, and now we can give the idea to solve:</p>
-        <ul>
-            <li>States are repeated</li>
-            <ul><li>Idea: Only compute needed quantities once</li></ul>
-            <li>Tree goes on forever</li>
+        <div style="margin-left:15%">
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-2">
+                    例子：网格世界
+                </h1>
+            </div>
             <ul>
-                <li>Idea: Do a depth-limited computation, but with increasing depths until change is small</li>
-                <li>Note: deep parts of the tree eventually don’t matter if γ < 1</li>
+                <font size="5">
+                    <p style="color: blue;">
+                        一个类似迷宫的问题
+                    </p>
+                    <li>
+                        agent生活在一个网格中
+                    </li>
+                    <li>
+                        墙壁挡住了agent的路径
+                    </li>
+                    <p style="color: blue;">不完全理想的移动：动作并不总是按计划进行</p>
+                    <li>80%的时间，向北行动会使agent向北移动（如果那里没有墙）</li>
+                    <li>
+                        10%的时间，向北行动会使agent向西移动；10%向东移动
+                    </li>
+                    <li>
+                        如果agent应该走的方向有墙壁，agent会原地不动
+                    </li>
+                    <p style="color: blue;">
+                        agent会收到奖励
+                    </p>
+                    <li>每一步都有小的“生存”奖励（可以是负数），根据是正数或负数，会称为生存奖励(living reward)或生存惩罚(living penalty)</li>
+                    <li>大的奖励会在最后出现（好的或坏的）。</li>
+                    <br>
+                    <p style="color: blue;">
+                        目标：最大化奖励总和
+                    </p>
+                </font>
             </ul>
-        </ul>
-        <font style="color:blue">Optimal Quantities</font>
-        <ul><img src="./image/8-10.png", alt=""  style="float:right; width:20%;">
-            <li>The utility (value) of a state s:</li>
-            <ul>
-                <li>V*(s) = expected utility starting in s and acting optimally</li>
-                <li>what the star means is this is the value under optimal action</li>
-            </ul>
-            <li>The value (utility) of a q-state (s,a):</li>
-            <ul>
-                <li>Q*(s,a) = expected utility starting out having taken action a from state s and (thereafter) acting optimally</li>
-                <li>Each action do have a Q-value</li>
-            </ul>
-            <li>The optimal policy:</li>
-            <ul><li>π*(s) = optimal action from state s</li></ul>
-        </ul>
-        <p>Therefore, recursive definition of value (The Bellman Equation):</p>
-        <img src="./image/8-11.png",alt="" style="width:30%;" class="alone-img">
-        <br>
-    </font>
-    
-</div>
+        </div>
 
-<div style="margin-left:15%">
-    <font size="5">
-    <p>If we can determine a value V (s) for each state s ∈ S so that the Bellman equation can calculate accurately for each of these states, we can conclude that these values are optimal for their respective states.</p>
-</font>
-    <div class="w3-container w3-teal">
-        <h1 id="title-8-7">Value Iteration</h1>
-    </div>
-    <font size="5">
-        <p>Now that we have a framework that can verify the optimality of the values of various states in the MDP, we naturally want to know how to accurately calculate these optimal values. For this reason, we need a <span style="color:blue">time-limited values</span>.</p>
-        <ul>
-            <li>Define <img src="./image/8-12.png", alt=""  style="width:3%;"> to be the optimal value of s if the game ends in k more time steps</li>
-            <li>Equivalently, it’s what a depth-k expectimax would give from s
-                </li>
-        </ul>
-        <p>Value iteration is a dynamic programming algorithm, which calculates the time limit value through an extended time limit of iteration until convergence.</p>
-        <ul>
-            <li>Start with <img src="./image/8-13.png", alt=""  style="width:3%;"> = 0: no time steps left means an expected reward sum of zero</li>
-            <li>Given vector of Vk(s) values, do one ply of expectimax from each state:</li>
-            <img src="./image/8-14.png",alt="" style="width:40%;" class="alone-img">
-            <li>Repeat until convergence, which yields V*</li>
-            <li>Complexity of each iteration: O(S²A)</li>
-            <li>Theorem: will converge to unique optimal values</li>
-            <ul>
-                <li>Basic idea: approximations get refined towards optimal values</li>
-                <li>Policy may converge long before values do</li>
-            </ul>
-        </ul>
-    </font>
-    <h2>
-        <font size="6">
-            Example: Value Iteration
-        </font>
-     </h2>   
-        <img src="./image/8-15.png" alt="" style="float:left;width:50%;">
-        <img src="./image/racing_value_iteration.gif" alt="" style="position: relative;left: 120px;;width: 25%;">
-    <br>
-    <br>
-    <br>
-</div>
+        <div style="margin-left:15%">
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-3">策略</h1>
+            </div>
+            <div class="w3-container">
+                <font size="5">
+                    <p>
+                        对于MDPs，我们希望一个最 π* : S → A
+                    </p>
 
-<div style="margin-left: 15%;">
-    <div class="w3-container w3-teal">
-        <h1 id="title-8-8">Policy Extraction</h1>
-    </div>
-    <font size="5">
-        <p>Policy extraction allows us to determine which action to take given expected values for each state V(s).</p>
-        <p>If we are in a state s, we should take action a that will produce the maximum expected benefits. In other words, We need to run a one-step expectimax and find the action that corresponds to the given value.</p>
-    </font>
-    <h2>
-        <font size="5">Computing Actions from Values</font>
-    </h2>
-    <font size="5">
-        <p>Given the optimal values for each state V*(s), we can extract the optimal policy by doing the following:</p>
-        <img src="./image/8-16.png",alt="" style="width:40%;" class="alone-img">
-        <p>This is only a depth one expectimax because the values V*(s') are all already known so no further recursion needs to be done.</p>
-    </font>
-    <h2>
-        <font size="5">Computing Actions from Q-Values</font>
-    </h2>
-    <font size="5">
-        <p>Given the q values for each state action pair Q*(s,a), we can extract the optimal policy by doing the following:</p>
-        <img src="./image/8-17.png",alt="" style="width:20%;" class="alone-img">
-        <font style="color:blue"><p>Important lesson: actions are easier to select from q-values than values!</p>
-        </font>
-    </font>
-</div>
+                    <ul>
+                        <li>
+                            一个策略π为每个状态提供一个动作
+                        </li>
+                        <li>最优政策是一种如果遵循就能最大化预期效用的政策</li>
+                        <li>显式策略定义了一个反射agent</li>
+                    </ul>
+                </font>
+             </div>
+        </div>
 
-<div style="margin-left: 15%;">
-    <div class="w3-container w3-teal">
-        <h1 id="title-8-9">Policy Iteration</h1>
-    </div>
-    <font size="5"><img src="./image/8-23.png", alt=""  style="float:right; width:40%;">
-        <p>Value iteration repeats the bellman updates. You have iteractions where K gets larger and larger starting at 0. For each iteration you visit each state and for each state you look at each action and for each action you look at each outcome. It's not always the best solution.</p>
-        <ul>
-            <li>Problem 1: It’s slow – O(S²A) per iteration</li>
-            <li>Problem 2: The “max” at each state rarely changes</li>
-            <li>Problem 3: The policy often converges long before the values</li>
-        </ul>
-        <p>Alternative approach for optimal values<span style="color:red">(policy iteration)</span>:</p>
-        <p>Step 1: Policy Evaluation: calculate utilities for some fixed policy (not optimal utilities!) until convergence</p>
-        <P>Step 2: Policy Improvement: update policy using one-step look-ahead with resulting converged (but not optimal!) utilities as future values</P>
-        <p>Repeat steps until policy converges.</p>
-    </font>
-    <h2>
-        <font size="5">Policy Evaluation</font>
-    </h2>
-    <font size="5">
-        <p>Policy evaluation is an evaluation of the expected reward of a policy.</p>
-        <p>Policy evaluation can be characterised as <img src="./image/8-18.png", alt=""  style="width:3%;"> as defined by the following equation:</p>
-        <img src="./image/8-19.png",alt="" style="width:30%;" class="alone-img">
-        <p>where <img src="./image/8-18.png", alt=""  style="width:3%;"> = 0 for terminal states.</p>
-        <p>Note that this is very similar to the Bellman equation, except <img src="./image/8-18.png", alt=""  style="width:3%;"> is not the value of the best action, but instead just as the value for π(s), the action that would be chosen in s by the policy π. </p>
-    </font>
-    <h2>
-        <font size="5">Policy Improvement</font>
-    </h2>
-    <font size="5">
-        <p>If we have a policy and we want to improve it, we can use policy improvement to change the policy (that is, change the actions recommended for states) by updating the actions it recommends based on V(s) that we receive from the policy evaluation.</p>
-        <p>We take one step look-ahead:</p>
-        <img src="./image/8-20.png",alt="" style="width:30%;" class="alone-img">
-        <p>When <img src="./image/8-21.png", alt=""  style="width:7%;">, the algorithm converges successfully, we can get <img src="./image/8-22.png", alt=""  style="width:9%;">.</p>
-    </font>
-</div>
+        <div style="margin-left:15%">
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-4">
+                    例子：竞速
+                </h1>
+            </div>
 
-<div style="margin-left: 15%;">
-    <div class="w3-container w3-teal">
-        <h1 id="title-8-10">Comparison</h1>
-    </div>
-    <font size="5">
-        <ul>
-            <li>Both value iteration and policy iteration compute the same thing (all optimal values)</li>
-            <li>In value iteration:</li>
-            <ul>
-                <li>Every iteration updates both the values and (implicitly) the policy</li>
-                <li>We don’t track the policy, but taking the max over actions implicitly recomputes it</li>
-            </ul>
-            <li>In policy iteration:</li>
-            <ul>
-                <li>We do several passes that update utilities with fixed policy (each pass is fast because we consider only one action, not all of them)</li>
-                <li>After the policy is evaluated, a new policy is chosen (slow like a value iteration pass)</li>
-                <li>The new policy will be better (or we’re done)</li>
-            </ul>
-            <li>Both are dynamic programs for solving MDPs</li>
-            <li>Why would you ever do value iteration ?</li>
-            <ul>It's simpler and in cases where there are a small number of actions you might do it.</ul>
+            <div class="w3-container">
+                <img src="./image/8-5.png" alt="" style="width:70%;position: relative; left: 280px;">
+                <font size="5">
+                    <p>定义：</p>
+                    <ul>
+                        <li>
+                            一个机器人汽车想要快速地行驶远距离
+                        </li>
+                        <li>状态: <font color="#00B0F0">Cool</font>, <font color="#7E2727">Warm</font>, Overheated</li>
+                        <li>动作: <font color="#333399">Slow</font>, <font color="#C00000">Fast</font></li>
+                        <li>行驶更快可以获得双倍奖励</li>
+                    </ul>
+                    <p>
+                        任何马尔可夫决策过程都定义了一棵搜索树。因此，如果你处于某个特定状态，例如汽车处于Cool状态，你有两个动作可选：Slow或Fast。
+                    </p>
+                </font>
+                <img src="./image/MDP_Search_Tree.gif" alt="" style="width:70%;position: relative; left: 280px;">
+                <font size="5">
+                    <p>每个马尔可夫决策过程状态都对应着一个类似期望最大化搜索树。</p>
+                    <p>但在期望最大化算法中的工作量过大，其问题如下：</p>
+                    <ul>
+                        <li>重复状态过多</li>
+                        <li>搜索树是无穷的</li>
+                    </ul>
+                    <p>为解决这个问题，我们先来了解效用。</p>
+                </font>
+            </div>
+        </div>
 
-        </ul>
-    </font>
+        <div style="margin-left:15%">
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-5">效用(Utilities)</h1>
+            </div>
+            <div class="w3-container">
+                <font size="5">
+                    <p>最大期望效用原则：一个理性的智能体应该根据其知识选择<span class="red-text">最大化其期望效用</span>的行动。</p>
+                    <p>引入效用的作用：</p><img src="./image/8-1.png" , alt="" style="float:right; width:40%;">
+                    <ul>
+                        <li>在最坏情况极小化推理中，终端函数的比例不影响最终结果</li>
+                        <ul>
+                            <li>我们只是希望更好的状态能够获得更高的评价（正确排序）</li>
+                            <li>在决策过程中，效用函数对于结果的相对顺序保持不变（单调变换的不敏感性）</li>
+                        </ul>
+                        <li>对于平均情况下的期望最大化推理，效用可以帮助确保数值的大小有意义</li>
+                    </ul>
+                    <p style="color:red">效用函数是从结果（真实状态）到实数的函数，用来描述一个智能体的偏好。</p>
+                </font>
+
+                <font size="5">
+                    <p><b>定理：</b>任何“理性(rational)”的偏好(preference)都可以被总结为一个效用函数。</p>
+                    <ul>
+                        <li>在游戏中，效用函数可以是简单的（+1/-1）</li>
+                        <li>效用函数总结了智能体的目标</li>
+                    </ul>
+                    <p>我们硬编码效用函数，让行为自发产生。</p>
+                    <ul>
+                        <li>为什么我们不让智能体选择效用函数呢？</li>
+                        <ul>
+                            <li>以吸尘器为例：智能体可能想什么都不做，因此什么都不做是很容易的</li>
+                        </ul>
+                    </ul>
+                    <ul>
+                        <li>为什么我们不规定行为呢？</li>
+                        <ul>
+                            <li>这样做很难完全定义，复杂且依赖于具体情境</li>
+                        </ul>
+                    </ul>
+                    <p>在马尔可夫决策过程（MDP）中，奖励是逐步到来的，我们需要弄清楚我们的效用函数实际上是什么。在最简单的情况下，你只需要将奖励相加，但情况可能比这更微妙。</p>
+                    <p>智能体对奖励序列应该有什么偏好？更多还是更少？现在还是以后？</p>
+                    <p>我们使用<span style="color:blue">折扣因子(discount)</span>来表达对奖励序列的偏好。</p>
+                </font>
+            </div>
+        </div>
+
+        <div style="margin-left:15%">
+            <div class="w3-container w3-teal">
+                <script src="./js/discount.js"></script>
+                <h1 id="title-8-6">折扣法</h1>
+            </div>
+            <div class="w3-container">
+                <font size="5">
+                    <p>在现实生活中，奖励总和最大化是合理的。而且更偏好即刻奖励而非延后奖励也是合理的。基于以上的考量，折扣法的解决方案是：<span style="color:blue">奖励价值按指数衰减</span> 。</p>
+
+                    <p>折扣法具体指什么？</p>
+
+                    <ul>
+                        <li>每次我们降一个级别，我们都要乘以一个折扣因子</li>
+                    </ul>
+                    <p>为什么使用折扣法？</p>
+                    <ul>
+                        <li>较早的奖励可能比较晚的奖励具有更高的效用</li>
+                        <li>有助于我们的算法收敛</li>
+                    </ul>
+                </font>
+
+                <font size="5">
+                    <p>如果智能体现在更喜欢A而不是B，那么它将来也应该更喜欢A而不是B，反之亦然。</p>
+                    <ul>
+                        <li>Theorem：如果我们假设偏好是稳定的：</li>
+                        <ul><li>[a₁,a₂,...] ≻ [b₁,b₂,...] <=> [r, a₁,a₂,...] ≻ [r, b₁,b₂,...]</li></ul>
+                        <li>Then：定义效用函数只有两种方式</li>
+                        <ul>
+                            <li>加法效用(Additive utility): U( [r₀,r₁,r₂,...] ) = r₀ + r₁ + r₂ + ...</li>
+                            <li>折扣效用(Discounted utility): U( [r₀,r₁,r₂,...] ) = r₀ + γ·r₁ + γ²·r₂ + ...</li>
+                        </ul>
+                    </ul>
+                    <h2 style="position: relative;">
+                        <font size="6">我们来通过一个小练习来计算折扣效用！</font>
+                    </h2>
+                    <font size="5">
+                        <p>折扣因子: <span id="discount"></span></p>
+                        <p>序列: <span id="sequence"></span></p>
+                        <input type="text" id="userAnswer" placeholder="结果保留两位小数" class="long-input">
+                        <br>
+                        <button onclick="checkAnswer()">提交答案</button>
+
+                        <button onclick="calculateResult()">生成新的折扣和序列</button>
+                        <br>
+                        <br>
+                    </font>
+
+                    <p style="color:blue"> 如果游戏永远持续下去会怎么样？我们会得到无限的奖励吗？</p>
+                    <p>SOLUTIONS:</p>
+                    <ul>
+                        <li>有限时间段：（类似于有深度限制的搜索）</li>
+                        <ul>
+                            <li>在固定的T步后终止（例如生命周期）。</li>
+                            <li>产生非稳定的策略（π取决于剩余时间）。</li>
+                        </ul>
+                        <li>折扣: 设γ， 0 < γ < 1</li>
+                        <ul>
+                            <li>U( [r₀,r₁,r₂,...] ) = r₀ + γ·r₁ + γ²·r₂ + ... <= Rmax/(1-γ)</li>
+                            <li>较小的γ意味着较小的“视野” - 更短的关注范围</li>
+                        </ul>
+                        <li>吸收状态(absorbing state)：确保对于每个策略，最终会达到一个终止状态（如竞速比赛中的“overheated”）</li>
+                    </ul>
+                </font>
+            </div>
+        </div>
+
+
+        <div style="margin-left:15%">
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-6">解决MDPs</h1>
+            </div>
+            <div class="w3-container">
+                <font size="5">
+                    <p>在“示例：赛车MDP”中，我们提出了两个问题，现在可以给出解决这些问题的思路:</p>
+                    <ul>
+                        <li>重复状态过多</li>
+                        <ul>
+                            <li>
+                                Idea: 只计算一次所需的数量
+                            </li>
+                        </ul>
+                        <li>搜索树是无穷的</li>
+                        <ul>
+                            <li>
+                                Idea:做一个深度有限的计算，但随着深度的增加，直到变化很小
+                            </li>
+                            <li>注意: 如果γ < 1，树的深处最终不重要</li>
+                        </ul>
+                    </ul>
+                    <font style="color:blue">
+                        最优数量
+                    </font>
+                    <ul>
+                        <img src="./image/8-10.png" , alt="" style="float:right; width:20%;">
+                        <li>状态s的值(效用)为:</li>
+                        <ul>
+                            <li>
+                                V*(s) = 期望效用，从s开始并以最优方式运行
+                            </li>
+                            <li>*号代表这是在最优行动下的价值。</li>
+                        </ul>
+                        <li>q-state (s,a)的值(效用):</li>
+                        <ul>
+                            <li>Q*(s,a) =  期望效用开始时从状态s中采取行动a，然后(此后)采取最佳行动</li>
+                            <li>每个行动都有一个Q值  </li>
+                        </ul>
+                        <li>最优策略：</li>
+                        <ul>
+                            <li>
+                                π*(s) = 状态s的最优行为
+                            </li>
+                        </ul>
+                    </ul>
+                    <p>因此，价值的递归定义是（贝尔曼方程）：</p>
+                    <img src="./image/8-11.png" ,alt="" style="width:30%;" class="alone-img">
+                    <br>
+                </font>
+
+            </div>
+            </div>
+
+        <div style="margin-left:15%">
+            <font size="5">
+                <p>如果我们可以确定每个状态s ∈ S的价值V(s)，以使贝尔曼方程能够准确计算每个状态的值，我们可以得出结论，这些值对于它们各自的状态是最优的。</p>
+            </font>
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-7">价值迭代</h1>
+            </div>
+            <div class="w3-container">
+                <font size="5">
+                    <p>现在我们有了一个能够验证MDP中各个状态的值的最优性的框架，我们自然想要知道如何准确计算这些最优值。因此，我们需要一种<font style="color: coral">“时间限制价值”(time-limited values)</font>。</p>
+                    <ul>
+                        <li> <img src="./image/8-12.png" , alt="" style="width:3%;"> 是指如果游戏在接下来的 k 步结束，状态 s 的最优值。</li>
+                        <li>
+                            等价地，这就是从状态s开始进行深度为k的expectimax搜索所得到的结果。
+                        </li>
+                    </ul>
+                    <p>价值迭代是一种动态规划算法，通过迭代的方式计算时间限制值，直到收敛为止。</p>
+                    <ul>
+                        <li>以 V₀(s) = 0 为起点：没有剩余时间步意味着预期奖励总和为零。</li>
+                        <li>给定值为 Vk(s) 的向量，对每个状态进行一轮expectimax:</li>
+                        <img src="./image/8-14.png" ,alt="" style="width:40%;" class="alone-img">
+                        <li>重复进行直到收敛，得到 V*</li>
+                        <li>每次迭代的复杂度：O(S²A)</li>
+                        <li>定理：会收敛到单一最优解</li>
+                        <ul>
+                            <li>基本思路：逼近当前值朝着最优值</li>
+                            <li>策略可能在值之前就已经收敛</li>
+                        </ul>
+                    </ul>
+                </font>
+                <h2>
+                    <font size="6">
+                        例子：价值迭代
+                    </font>
+                </h2>
+                <img src="./image/8-15.png" alt="" style="float:left;width:50%;">
+                <img src="./image/racing_value_iteration.gif" alt="" style="position: relative;left: 120px;;width: 25%;">
+                <br>
+                <br>
+                <br>
+            </div>
+            </div>
+
+        <div style="margin-left: 15%;">
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-8">策略提取</h1>
+            </div>
+            <div class="w3-container">
+                <font size="5">
+                    <p>策略提取允许我们确定在给定每个状态的预期值 V(s) 的情况下应该采取哪种行动。</p>
+                    <p>如果我们处于状态 s，我们应该采取能产生最大预期收益的行动 a。换句话说，我们需要运行一步 expectimax，并找到与给定值对应的行动。</p>
+                </font>
+                <h2>
+                    <font size="5">
+                        从价值计算行动
+                    </font>
+                </h2>
+                <font size="5">
+                    <p>给定每个状态的最优值 V*(s)，我们可以通过以下步骤提取最优策略：</p>
+                    <img src="./image/8-16.png" ,alt="" style="width:40%;" class="alone-img">
+                    <p>这只是一个深度为1的expectimax，因为状态 s' 的值 V*(s') 已经全部知道了，所以不需要进一步递归。</p>
+                </font>
+                <h2>
+                    <font size="5">从Q值计算行动</font>
+                </h2>
+                <font size="5">
+                    <p>给定每个状态动作对的 Q*(s,a) 值，我们可以通过以下步骤提取最优策略：</p>
+                    <img src="./image/8-17.png" ,alt="" style="width:20%;" class="alone-img">
+                    <font style="color:blue">
+                        <p>重要教训：从Q值中选择动作比从值中选择更容易！</p>
+                    </font>
+                </font>
+            </div>
+            </div>
+
+        <div style="margin-left: 15%;">
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-9">策略迭代</h1>
+            </div>
+            <div class="w3-container">
+                <font size="5">
+                    <p>
+                        价值迭代重复执行bellman更新。您会进行多次迭代，其中 K 从 0 开始逐渐增大。
+                        在每次迭代中，您会访问每个状态，对于每个状态，您会考虑每个动作;
+                    <p> 对于每个动作，您会考虑每个结果。这并不总是最佳解决方案。</p>
+                    <ul>
+                        <li>问题 1: 速度慢 – 每次迭代的时间复杂度是O(S²A)</li>
+                        <li>问题 2: 每个状态的“最大值”很少改变</li>
+                        <li>问题 3:策略经常在值之前收敛</li>
+                    </ul>
+                    <p>最优值的替代方法<span style="color:red">(策略迭代)</span>:</p>
+                    <p>Step 1: 策略评估(Policy Evaluation)：计算某个固定策略下的效用（非最优效用），直到收敛。 </p>
+                    <P>Step 2: 策略改进(Policy Improvement)：使用一步展望更新策略，将收敛（但非最优）的效用作为未来值。</P>
+                    <p>重复以上步骤直到策略收敛。</p>
+                </font>
+                <h2>
+                    <font size="5">策略评估(Policy Evaluation)</font>
+                </h2>
+                <font size="5">
+                    <p>策略评估是对一个策略的预期奖励的评估。</p>
+                    <p>策略评估 <img src="./image/8-18.png" , alt="" style="width:3%;">可以用以下方程来描述 </p>
+                    <img src="./image/8-19.png" ,alt="" style="width:30%;" class="alone-img">
+                    <p>其中 <img src="./image/8-18.png" , alt="" style="width:3%;"> = 0 表示终止状态。</p>
+                    <p>请注意，这与贝尔曼方程非常相似，不同之处在于 <img src="./image/8-18.png" , alt="" style="width:3%;"> 不是最佳动作的值，而是策略 π 在状态 s 下会选择的动作的值。 </p>
+                </font>
+                <h2>
+                    <font size="5">策略改进(Policy Improvement)</font>
+                </h2>
+                <font size="5">
+                    <p>如果我们有一个策略并希望改进它，我们可以使用策略改进来更新策略（即更改对状态推荐的操作），方法是根据从策略评估中得到的 V(s) 更新它推荐的操作。</p>
+                    <p>我们进一步思考：</p>
+                    <img src="./image/8-20.png" ,alt="" style="width:30%;" class="alone-img">
+                    <p>当 <img src="./image/8-21.png" , alt="" style="width:7%;">，算法成功收敛。我们可以得到 <img src="./image/8-22.png" , alt="" style="width:9%;">。</p>
+                </font>
+            </div>
+            </div>
+
+        <div style="margin-left: 15%;">
+            <div class="w3-container w3-teal">
+                <h1 id="title-8-10">对比总结</h1>
+            </div>
+            <div class="w3-container">
+                <font size="5">
+                    <ul>
+                        <li>价值迭代和策略迭代都计算相同的内容（所有最优值）。</li>
+                        <li>价值迭代：</li>
+                        <ul>
+                            <li>每次迭代都会更新值和（隐式地）策略。</li>
+                            <li>我们不跟踪策略，但通过对动作取最大值隐式地重新计算策略。</li>
+                        </ul>
+                        <li>策略迭代：</li>
+                        <ul>
+                            <li>我们进行多次遍历，使用固定策略更新效用值（每次遍历都很快，因为只考虑一个动作，而不是所有动作）。</li>
+                            <li>在策略评估完成后，选择一个新策略（类似于进行值迭代遍历的速度）。</li>
+                            <li>新策略将会更好（或者已经完成）。</li>
+                        </ul>
+                        <li>两者都是解决MDP的动态规划方法</li>
+                        <li>为什么要选择价值迭代？</li>
+                        <ul>价值迭代更简单，在动作数量较少的情况下可能会选择这种方法。</ul>
+
+                    </ul>
+                </font>
+            </div>
+        </div>
+</body>
+</html>

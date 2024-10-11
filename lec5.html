@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-<title>Local search</title>
+<title>局部搜索</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Local search</title>
+  <title>局部搜索</title>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <link rel="stylesheet" href="./css/Romania.css">
   <link rel="stylesheet" href="./css/DFS_BFS.css">
@@ -17,98 +17,103 @@
 <body>
 
 <!-- Sidebar -->
-<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
-  <a href="./index.html"><h3 class="w3-bar-item">Artificial Intelligence</h3></a>
-  <a href="./index copy.html" class="w3-bar-item w3-button w3-large">Agents and environments</a> 
-  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">Uninformed Search</a>
-  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">Informed Search</a>
-  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
-  <ul>
-    <li><a href="#title-1-1" class="w3-bar-item w3-button">Hill Climbing</a></li>
-    <li><a href="#title-1-2" class="w3-bar-item w3-button">Simulated annealing</a></li>
-    <li><a href="#title-1-3"class="w3-bar-item w3-button">Local beam search</a></li>
-    <li><a href="#title-1-4" class="w3-bar-item w3-button">Local search in continuous spaces</a></li>
-    <li><a href="#title-1-5" class="w3-bar-item w3-button">Summary</a></li>
-  </ul>
-  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
-  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
-  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
-</div>
+    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+        <a href="./index.html"><h3 class="w3-bar-item">人工智能</h3></a>
+        <a href="./lec2.html" class="w3-bar-item w3-button w3-large">智能体与环境</a>
+        <a href="./lec3.html" class="w3-bar-item w3-button w3-large">盲搜</a>
+        <a href="./lec4.html" class="w3-bar-item w3-button w3-large">启发式搜索</a>
+        <a href="./lec5.html" class="w3-bar-item w3-button w3-large">局部搜索</a>
+        <ul>
+            <li><a href="#title-1-0" class="w3-bar-item w3-button">局部搜索算法(local search)</a></li>
+            <li><a href="#title-1-1" class="w3-bar-item w3-button">爬山算法(hill-climbing)</a></li>
+            <li><a href="#title-1-2" class="w3-bar-item w3-button">模拟退火算法(simulated annealing)</a></li>
+            <li><a href="#title-1-3" class="w3-bar-item w3-button">局部束搜索(local beam search)</a></li>
+            <li><a href="#title-1-4" class="w3-bar-item w3-button">连续变量空间内的局部搜索</a></li>
+            <li><a href="#title-1-5" class="w3-bar-item w3-button">总结</a></li>
+        </ul>
+        <a href="./lec6.html" class="w3-bar-item w3-button w3-large">对抗搜索</a>
+        <a href="./lec7.html" class="w3-bar-item w3-button w3-large">期望最大搜索</a>
+        <a href="./lec8.html" class="w3-bar-item w3-button w3-large">马尔可夫决策过程</a>
+    </div>
 
 <!-- Page Content -->
 <div style="margin-left:15%">
     <div class="w3-container w3-teal">
-      <h1>Local search Algorithms</h1></div>
+      <h1 id="title-1-0">局部搜索算法(local search)</h1></div>
       <div class="w3-container">
         <font size="5">
+            <p>局部搜索算法（local search）是一种启发式搜索算法，专注于在解空间中通过不断地移动当前解的邻近解来寻找更优解。</p>
       <ul>
-        <li>In many optimization problems, path is irrelevant; the goal state is the solution </li>
-        <li>Then state space = set of “complete” configurations;find configuration satisfying constraints, e.g., n-queens problem; or, find optimal configuration, e.g., travelling salesperson problem </li>
-        <li>Then state space = set of “complete” configurations;find configuration satisfying constraints, e.g., n-queens problem; or, find optimal configuration, e.g., travelling salesperson problem </li>
+          <p>在许多优化问题中，路径是无关紧要的；问题的目标状态是解决方法。状态空间等价于“完整”配置的集合。</p>
+          <p>处理这类优化问题一般有两类方法：</p>
+          <li>寻找满足限制的配置, 例如：N皇后问题</li>
+          <li>寻找最优的配置, 例如：旅行员推销问题 </li>
         <img src="./image/lec5-2.png" alt="" style="width:20%;position: relative; left: 80px;">
         <img src="./image/lec5-3.png" alt="" style="width:20%;position: relative; left: 280px;">
-        <li>In such cases, can use iterative improvement algorithms: keep a single “current” state, try to improve it</li>
-        <li>Constant space, suitable for online as well as offline search</li>
-        <li>More or less unavoidable if the “state” is yourself (i.e., learning)</li> 
+        <li>在此情况下, 使用迭代改进算法: 保存一个“当前”状态, 尝试优化它</li>
+        <li>在常量空间内, 可用于在线/离线搜索(online and offline search)</li>
+        <li>在学习过程中，调整优化自身状态是不可避免的</li> 
       </ul>          
         </font>
 
     <div class="w3-container w3-teal">
-      <h1 id="title-1-1">Hill Climbing</h1>
+      <h1 id="title-1-1">爬山算法(hill-climbing)</h1>
     </div>
     <div class="w3-container"> 
-      <img src="./image/lec5-10.png" alt="" style="width:50%;position: relative; left: 280px;">
     <font size="5">
-      <p>Simple, general idea:</p>
-      <ul>
-        <font size="5">
-        <li>Start wherever</li>
-        <li>Repeat: move to the best neighboring state</li>
-        <li>Are pocket calculators agents?</li>
-        <li>If no neighbors better than current, quit</li>
-        <br>
-        </font>
-    </ul>
-    <h2 style="position: relative;">
-      <font size="6">Heuristic for n-queens problem</font>
-    </h2>
-      <ul>
-        <font size="5">
-        <li>Goal: n queens on board with no conflicts, i.e., no queen attacking another</li>
-        <li>States: n queens on board, one per column</li>
-        <li>Heuristic value function: number of conflicts</li>
-        <br>
-        </font>
-      </ul> 
-    <h2 style="position: relative;">
-      <font size="6">Hill-climbing algorithm</font> 
-      <br>
-      <p>Try using python code</p>
+        <p>
+            爬山算法（hill-climbing）是一种简单且直观的局部搜索算法，用于解决优化问题。该算法的基本思想类似于爬山过程，即尝试朝着当前位置最陡峭的方向移动，以期望到达更高的点（更优解）。</p>
+            <h2 style="position: relative;">
+                <font size="6">N皇后问题</font>
+            </h2>
+            <p>爬山算法可以作为N皇后问题的启发式算法。</p>
+            <ul>
+                <font size="5">
+                    <li>
+                        目标: 寻找N皇后在棋盘上的不冲突排列，即任意两者无法攻击彼此
+                    </li>
+                    <li>状态: N个皇后以每列一个的方式分布在棋盘上</li>
+                    <li>
+                        启发式Value函数: 冲突关系的数量
+                    </li>
+                    <br>
+                </font>
+            </ul>
+            <h2 style="position: relative;">
+                <font size="6">爬山算法</font>
+                <br>
+<p>试试使用python编写代码：</p>
       <div>
         <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
       </div>
     </h2>
     <h2 style="position: relative;">
-      <font size="6">Global and local maxima</font> 
+        <font size="6"> 全局与局部最优</font> 
       <br>
       <br>
       <img src="./image/lec5-5.png" alt="" style="width:50%;position: relative; left: 280px;">
     </h2>
     <font size="5">
-      <p>Random restarts</p>
+        <p>随机重启</p>
       <ul>
-        <li>find global optimum</li>
-        <li>duh:only remember the current state</li>
+        <li>寻找全局最优</li>
+        <li>
+            弊病: 只记得当前状态
+        </li>
       </ul>
-      <p>Random sideways moves</p>
+      <p>
+          随机横向移动
+      </p>
       <ul>
-        <li>Escape from shoulders</li>
-        <li>Loop forever on flat local maxima</li>
+          <li>从肩部离开</li>
+          <li>
+              在“flat”的局部最优除陷入死循环
+          </li>
       </ul>
     </font>        
     <h2 style="position: relative;">
       <br>
-      <font size="6">Try on 8-queens problem</font>
+      <font size="6">尝试解决8皇后问题：</font>
       <div>
         <iframe src="./n-queens/index.html" style="width:100%; height:600px;"></iframe>
       </div>
@@ -118,139 +123,123 @@
     </div>    
 <div class="w3-container w3-teal">
 
-  <h1 id="title-1-2">Simulated annealing</h1>
+  <h1 id="title-1-2">模拟退火算法(simulated annealing)</h1>
 </div>
 <div class="w3-container"> 
 <font size="5">
-  <p>Resembles the annealing process used to cool metals slowly to reach an ordered (low-energy) state
-  </p>
-  <p>Basic idea:</p>
+    <p>
+        模拟退火算法是一种启发式优化算法，灵感来源于固体退火过程中的原理。其基本思想是模拟固体物质加热后再缓慢冷却的过程，通过在解空间中随机搜索，并接受比当前解更差的解，以一定概率来避免陷入局部最优解，最终找到全局最优解。
+    </p>
+  <p>基本思想：</p>
   <ul>
     <font size="5">
-      <li>Allow “bad” moves occasionally, depending on “temperature”</li>
-      <li>High temperature => more bad moves allowed, shake the system out of its local minimum</li>
-      <li>Gradually reduce temperature according to some schedule</li>
-      <li>Sounds pretty flaky, doesn’t it?</li>
+      <li>基于“温度（temperature）”，允许偶尔的坏解（bad moves）</li>
+      <li>在高温度下，允许更多探索坏解，让系统跳出局部最优</li>
+      <li>根据特定策略，逐渐降低温度</li>
       <br>
     </font>
 </ul>
 <h2 style="position: relative;">
-  <font size="6">Simulated annealing algorithm</font> 
+  <font size="6">模拟退火算法</font> 
   <br>
-  <p>Try using python code</p>
+  <p>试试使用python编写代码：</p>
   <div>
     <iframe src="./pythoneditor.html" style="width:100%; height:400px;"></iframe>
   </div>
 </h2>
 <h2 style="position: relative;">
-  <font size="6">Simulated Annealing</font> </h2>
-  <p>Theoretical guarantee:
+  <font size="6">模拟退火</font> </h2>
+  <p>理论依据：
   </p>
   
   <ul>
     <font size="5">
-      <li>Stationary distribution (Boltzmann):</li>
-      <li>If T decreased slowly enough, will converge to optimal state!</li>
+        <li>
+            Boltzmann平稳分布（Stationary distribution）：如果 T 下降的足够慢，则系统将收敛至最优状态！
+        </li>
       <br>
     </font>
-  <p>Proof sketch (for reversible case: x→y iff y→x):</p>
+    <p>简单证明 (对于逆过程: x→y iff y→x): </p>
   <ul>
     <font size="5">
-      <li>Let P(x), P(y) be the equilibrium occupancy probabilities at T
+        <li>
+            令 P(x), P(y) 为T状态下的平均占据概率 (equilibrium occupancy probabilities)
       </li>
-      <li>Let P(x→y) be the probability that state x transitions to state y
-      </li>
-      <li>Assume E(y) > E(x) [and the algorithm seeks high values of E</li>
+        <li>
+            令P(x→y)状态x 到 y 的状态转移概率
+        </li>
+        <li>
+            假设E(y) > E(x) [算法目标在于取得更高的 E 值]
+        </li>
       <br>
     </font>    
   </ul>
-  <p>Simulated annealing and its relatives are a key workhorse in VLSI layout and other optimal configuration problems.</p>
+  <p>
+      模拟退火及其变种在超大规模集成电路布局(VLSI)和其他配置优化问题中是重要工具
+  </p>
 
 </font>
 
 </div> 
 <div class="w3-container w3-teal">
-  <h1 id="title-1-3">Local beam search</h1>
+    <h1 id="title-1-3">局部束搜索(local beam search)</h1>
 </div>    
 <br>
 <div class="w3-container"> 
   <font size="5">
-    <p>Basic idea:</p>
+      <p>局部束搜索算法(local beam search)是一种并行搜索算法，它通过同时维护多个状态（光束）来探索解空间，以期望找到更优的解。</p>
+    <p>基本思想：</p>
     <ul>
       <font size="5">
-        <li>K copies of a local search algorithm, initialized randomly
-        </li>
-        <li>For each iteration:Generate ALL successors from K current states, Choose best K of these to be the new current states</li>
+          <li>
+              K个同样的局部搜索算法，被随机初始化
+          </li>
+        <li>每次循环时，从K个当前状态生成所有的后继状态，并从这些后继状态中选择top K个状态（或者在一定的误差范围内，随机选择K个较好的状态）</li>
         <br>
       </font>
     </ul>
-    <p>Why is this different from K local searches in parallel?</p>
-    <ul>
-      <font size="5">
-        <li>The searches communicate! “Come over here, the grass is greener!”
-        </li>
-      </font> 
-    </ul>
-    <p>What other well-known algorithm does this remind you of?</p>
-    <ul>
-      <font size="5">
-        <li>Evolution!</li>
-      </font> 
-    </ul>
+    <p><b>局部束搜索和并行K个局部搜索是不同的。</b>
+        局部束搜索是一种并行搜索算法，通过同时维护多个状态（光束）来探索解空间。每个光束代表一个搜索路径，光束之间可以共享信息，以期望找到更优解。
+        而并行K个算法是指同时运行K个独立的算法实例，每个实例独立搜索解空间。这些算法实例之间通常是相互独立的，没有信息共享。
+    </p>
+      <br />
+    <p>著名的遗传(genetic)算法/进化(evolution)算法就是随机束搜索的变形。</p>
   <h2 style="position: relative;">
-    <font size="6">Genetic algorithms</font>   </h2>
-    <br>
-    <br>
+    <font size="6">遗传算法(Genetic algorithms)</font>   </h2>
     <br>
     <img src="./image/lec5-6.png" alt="" style="width:60%;position: relative; left: 50px;">
-    <img src="./image/lec5-7.png" alt="" style="width:19%;position: relative; left: 200px;">
 
-    <p>Genetic algorithms use a natural selection metaphor</p>
-    
+    <p>遗传算法隐喻了自然选择的过程</p>
+
     <ul>
       <font size="5">
-        <li>Resample K individuals at each step (selection) weighted by fitness function
-        </li>
-        <li>Combine by pairwise crossover operators, plus mutation to give variety
-        </li>
+          <li>
+              每次依照适应度函数，重复采样 K 个样本
+          </li>
+          <li>
+              按对交叉组合，辅以变异以获得多样性
+          </li>
         <br>
       </font>
-    <ul>
-    <p>Example: N-Queens</p>
-    <img src="./image/lec5-8.png" alt="" style="width:50%;position: relative; left: 280px;">
-      <font size="5">
-        <li>Does crossover make sense here?</li>
-        <li>What would mutation be?</li>
-        <li>What would a good fitness function be?</li>
-        <br>
-      </font>    
-    </ul>
 
   </font>
   
   </div> 
 <div class="w3-container w3-teal">
-  <h1 id="title-1-4">Local search in continuous spaces</h1>
+    <h1 id="title-1-4">
+        连续变量空间内的局部搜索
+    </h1>
 </div>    
-<br>
 <div class="w3-container">
-  <img src="./image/lec5-9.png" alt="" style="width:50%;position: relative; left: 80px;">
-  <br>
-<br>
 <font size="6">
-<p>Handling a continuous state/action space</p>
+    <p>
+        解决连续变量/动作空间
+    </p>
 <font size="5">
 <ul>
-  <li>Discretize it! Define a grid with increment  , use any of the discrete algorithms
-    </li>
-  <li>Choose random perturbations to the state</li>
-  <ul>
-    <li>    a. First-choice hill-climbing: keep trying until something improves the state
-    </li>
-    <li>    b. Simulated annealing 
-    </li>
-  </ul>
-  <li>Compute gradient of f(x) analytically</li>
+  <li>离散化：定义一个increment = δ的离散网络</li>
+  <li>选择状态的随机扰动：如爬山算法，模拟退火等</li>
+  <li>解析计算 f(x) 的梯度</li>
 </ul>   
 </font>
  
@@ -259,24 +248,33 @@
 </div>
 <br>
 <div class="w3-container w3-teal">
-  <h1 id="title-1-5">summary</h1>
+  <h1 id="title-1-5">总结</h1>
 </div>
 <br>
 <div class="w3-container">
   <font size="5">
-  <p>Many configuration and optimization problems can be formulated as local search
-  </p>
-  <p>General families of algorithms:
-  </p>
+      <p>许多配置和优化问题可以被构建为局部搜索问题</p>
+      <p>
+          通用算法:
+      </p>
   <font size="5">
     <ul>
-      <li>Hill-climbing, continuous optimization</li>
-      <li>Simulated annealing (and other stochastic methods)</li>
-      <li>Local beam search: multiple interaction searches</li>
-      <li>Genetic algorithms: break and recombine states</li>
+        <li>
+            爬山算法 (Hill-climbing), 连续优化
+        </li>
+        <li>
+            模拟退火算法 (Simulated annealing) 及其他随机算法
+        </li>
+        <li>
+            局部束搜索 (Local beam search)：多交互搜索
+        </li>
+        <li>
+            遗传算法 (Genetic algorithms)：打破并重组当前状态
+        </li>
     </ul>      
   </font>
-  <p>Many machine learning algorithms are local searches
+  <p>
+      众多机器学习算法是局部搜索算法
   </p>  
   </font>
 

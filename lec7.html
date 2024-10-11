@@ -18,120 +18,133 @@
 <body>
 
 <!-- Sidebar -->
-<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
-  <a href="./index.html"><h3 class="w3-bar-item">Artificial Intelligence</h3></a>
-  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">Agents and environments</a>
-  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">Uninformed Search</a>
-  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">Informed Search</a>
-  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
-  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
-  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
-  <ul>
-    <li><a href="#title-7-1" class="w3-bar-item w3-button">Uncertain Outcomes</a></li>
-    <li><a href="#title-7-2" class="w3-bar-item w3-button">Expectimax Search</a></li>
-  </ul>
-  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
-</div>
-
-<div style="margin-left:15%">
-    <div class="w3-container w3-teal">
-        <h1 id="title-7-1">Uncertain Outcomes</h1>
+    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+        <a href="./index.html"><h3 class="w3-bar-item">人工智能</h3></a>
+        <a href="./lec2.html" class="w3-bar-item w3-button w3-large">智能体与环境</a>
+        <a href="./lec3.html" class="w3-bar-item w3-button w3-large">盲搜</a>
+        <a href="./lec4.html" class="w3-bar-item w3-button w3-large">启发式搜索</a>
+        <a href="./lec5.html" class="w3-bar-item w3-button w3-large">局部搜索</a>
+        <a href="./lec6.html" class="w3-bar-item w3-button w3-large">对抗搜索</a>
+        <a href="./lec7.html" class="w3-bar-item w3-button w3-large">期望最大搜索</a>
+        <ul>
+            <li><a href="#title-7-1" class="w3-bar-item w3-button">不确定的结果</a></li>
+            <li><a href="#title-7-2" class="w3-bar-item w3-button">期望最大化搜索(Expectimax Search)</a></li>
+        </ul>
+        <a href="./lec8.html" class="w3-bar-item w3-button w3-large">马尔可夫决策过程</a>
     </div>
-    <font size="5">
-        <p style="color: blue;">Why wouldn’t we know what the result of an action will be?</p>
-        <img src="./image/7-1.png" alt="" style="float:right;width:25%;">
-    </font>
-    <ul>
-        <font size="5">
-            <li>Explicit randomness: rolling dice</li>
-            <li>Unpredictable opponents: the ghosts respond randomly</li> 
-            <li>Actions can fail: when moving a robot, wheels might slip</li>
-        </font>
-      </ul>
-      <font size="5">
-        <p>Idea: Uncertain outcomes controlled by chance, not an adversary!</p>
-        <p>In the actual operation process, the opponent is not always able to make the best decision, and there will be some probability of mistakes. Therefore we should calculate the average score.</p>
-        
-      </font>
-</div>
 
-<div style="margin-left:15%">
-    <div class="w3-container w3-teal">
-        <h1 id="title-7-2">Expectimax Search</h1>
-    </div>
-    <font size="5">
-        <p>The opponent may not be smart enough to get the optimal solution. Therefore, we regard the opponent node as a chance node, which has a certain probability to implement a certain strategy. At this time, the strategy is to maximize the expected utility. </p>
-        <p> <span class="red-text">So values should now reflect average-case (expectimax) outcomes, not worst-case (minimax) outcomes.</span></p>
-        
-    </font>
-    <ul>
-        <font size="5">
-            <li>Max nodes as in minimax search</li>
-            <li>Chance nodes are like min nodes but the outcome is uncertain</li>
-            <li>Calculate their expected utilities</li>
-            <li>I.e. take weighted average (expectation) of children</li>
-        </font>
-      </ul>
-      <font size="5">
-        <p>The search tree of stochastic games has an additional node type: the chance nodes. A chance node u represents a probability distribution over the set of moves available to the player whose node is the parent of u. Instead of the minimax values, the nodes have the expectimax values. They’re the same as the minimax values for MIN and MAX nodes, but for a chance node, the expectimax value is the expected value of its children.</p>
-      </font>
-      <font size="3"><pre style="margin-left: -0.3in"><img src="" alt="" style="float:right;width:20%;">
-        <font color="#800080">    def value(state):</font>
-        <font color="#000000">    if the state is a terminal state: return the state's utility</font>
-        <font color="#000000">    if the next agent is</font> <font color="#0000ff">MAX</font>: return <font color="#0000ff">max-value(state)</font>
-        <font color="#000000">    if the next agent is</font> <font color="#008800">EXP</font>: return <font color="#008800">exp-value(state)</font>
-      </font>
+    <div style="margin-left:15%">
+        <div class="w3-container w3-teal">
+            <h1 id="title-7-1">
+                不确定的结果
+            </h1>
+        </div>
+        <div class="w3-container">
 
-      <font size="3"><pre style="margin-left: 0in"><img src="./image/7-2.png" alt="" style="float:right;width:30%;">
-        <font color="#0000ff">    def max-value(state):</font>
-        <font color="#000000">    initialize v=-∞</font>
-        <font color="#000000">    for each successor of state:</font>
-        <font color="#000000">        v = max(v, </font><font color="#800080">value(successor)</font>)
-        <font color="#000000">    return v</font>
-      </font>
+            <font size="5">
+                <p style="color: blue;">现实生活中我们是无法预知行为的。</p>
+            </font>
+            <ul>
+                <font size="5">
+                    <li>显式随机性：掷骰子</li>
+                    <li>无法预知的对手：幽灵随机反应</li>
+                    <li>动作可能会失败：比如移动机器人时，车轮可能会打滑</li>
+                </font>
+            </ul>
+            <font size="5">
+                <p>Idea:不确定的结果是由机会（chance）控制的，而不是对手！</p>
+                <p>在实际操作过程中，对手并不总能做出最佳决策，可能会有一定概率出现错误。因此，我们应该计算平均得分。</p>
+            </font>
+        </div>
+        </div>
+        <div style="margin-left:15%">
+            <div class="w3-container w3-teal">
+                <h1 id="title-7-2">
+                    期望最大化搜索(Expectimax Search)
+                </h1>
+            </div>
+            <div class="w3-container">
 
-      <font size="3"><pre style="margin-left: 0in"><img src="" alt="" style="float:right;width:20%;">
-        <font color="#008800">    def exp-value(state):</font>
-        <font color="#000000">    initialize v=0</font>
-        <font color="#000000">    for each successor of state:</font>
-        <font color="#000000">        p = probability(successor)</font>
-        <font color="#000000">        v += p * </font><font color="#800080">value(successor)</font>
-        <font color="#000000">    return v</font>
-      </font>
-</div>
-<div style="margin-left:15%">
-    <font size="5">
-      <p style="color:blue;">Expectimax can not apply pruning.</p>
-  </font>
-      <font size="5"><img src="./image/7-3.png" alt="" style="float:right;width:20%;">
-        <p>In expectimax search, we have a probabilistic model of how the opponent (or environment) will behave in any state</p>
-    </font>
-    <ul>
-        <font size="5">
-            <li>Model could be a simple uniform distribution (roll a die)</li>
-            <li>Model could be sophisticated and require a great deal of computation</li>
-            <li>We have a chance node for any outcome out of our control: opponent or environment</li>
-            <li>The model might say that adversarial actions are likely!</li>
-        </font>
-      </ul>
-      <font size="5">
-        <p>For now, assume each chance node magically comes along with probabilities that specify the distribution over its outcomes.</p>
-        <p>One important thing to remember is that just because we assign probabilities that reflect our believes to the outcome , does not mean that the thing on the other side of flipping a coin.</p>
-        <p>If I think there is a 20% chance that the ghost go to left , it doesn't mean that the ghost has a random number generator. It just means that given my model which may be a simplification that's the best i can say given my evidence.</p>
-      </font>
+                <font size="5">
+                    <p>对手可能没有足够聪明来得到最佳解决方案。因此，我们将对手节点视为一个机会节点，它有一定概率实施某种策略。为了获得最佳结果，我们的策略是最大化期望效用。</p>
+                    <p> <span class="red-text">因此，值现在应该反映平均情况（期望最大化）的结果，而不是最坏情况（极小化极大）的结果。</span></p>
 
-      <h2 style="position: relative;">
-        <font size="6">Video of Demo World Assumptions Random Ghost – Expectimax Pacman</font> 
-        </h2>
-        <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
-          <source src="./video/video-7-1.mp4" type="video/mp4"></source>
-        </video>
-        <br>
-        <h2 style="position: relative;">
-          <font size="6">Video of Demo World Assumptions Adversarial Ghost – Expectimax Pacman</font> 
-        </h2>
-        <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
-          <source src="./video/video-7-2.mp4" type="video/mp4"></source>
-        </video>
+                </font>
+                <ul>
+                    <font size="5">
+                        <li>Max节点类似于极小化极大搜索</li>
+                        <li>Chance节点类似于极小节点，但结果是不确定的</li>
+                        <li>计算它们的期望效用</li>
+                        <li>即取子节点的加权平均值（期望值）</li>
+                    </font>
+                </ul>
+                <font size="5">
+                    <p>期望最大化搜索（Expectimax Search）是一种用于处理随机性的搜索算法，通常用于解决带有随机元素的游戏或决策问题。与传统的最大化搜索（如极小化极大算法）不同，期望最大化搜索考虑到对手的随机行为，以及环境中的随机事件。在期望最大化搜索中，对于每个决策点，会计算所有可能行动的期望值，而不仅仅是选择最大化价值的行动。这种方法能更好地处理不确定性，并在评估可能性时考虑到随机性。</p>
+                    <p>随机游戏的搜索树具有额外的节点类型：机会节点。机会节点 u 表示了在其父节点是某个玩家的情况下可用移动的概率分布。节点不再具有极小化极大值，而是具有期望最大化值。对于 MIN 和 MAX 节点，它们的值与极小化极大值相同，但对于机会节点，期望最大化值是其子节点的期望值。</p>
+                </font>
+                <font size="3">
+                    <pre style="margin-left: -0.3in"><img src="" alt="" style="float:right;width:20%;">
+                    <font color="#800080">    def value(state):</font>
+                    <font color="#000000">    if the state is a terminal state: return the state's utility</font>
+                    <font color="#000000">    if the next agent is</font> <font color="#0000ff">MAX</font>: return <font color="#0000ff">max-value(state)</font>
+                    <font color="#000000">    if the next agent is</font> <font color="#008800">EXP</font>: return <font color="#008800">exp-value(state)</font>
+                </font>
 
-</div>
+                <font size="3">
+                    <pre style="margin-left: 0in"><img src="./image/7-2.png" alt="" style="float:right;width:30%;">
+                    <font color="#0000ff">    def max-value(state):</font>
+                    <font color="#000000">    initialize v=-∞</font>
+                    <font color="#000000">    for each successor of state:</font>
+                    <font color="#000000">        v = max(v, </font><font color="#800080">value(successor)</font>)
+                    <font color="#000000">    return v</font>
+                </font>
+
+                <font size="3">
+                    <pre style="margin-left: 0in"><img src="" alt="" style="float:right;width:20%;">
+                    <font color="#008800">    def exp-value(state):</font>
+                    <font color="#000000">    initialize v=0</font>
+                    <font color="#000000">    for each successor of state:</font>
+                    <font color="#000000">        p = probability(successor)</font>
+                    <font color="#000000">        v += p * </font><font color="#800080">value(successor)</font>
+                    <font color="#000000">    return v</font>
+                </font>
+            </div>
+            <div class="w3-container">
+
+                <font size="5">
+                    <p style="color:blue;">期望最大化搜索不能应用剪枝。</p>
+                </font>
+                <font size="5">
+                    <img src="./image/7-3.png" alt="" style="float:right;width:20%;">
+                    <p>在期望最大化搜索中，我们对对手（或环境）在任何状态下的行为有一个概率模型。</p>
+                </font>
+                <ul>
+                    <font size="5">
+                        <li>模型可以是简单的均匀分布（掷骰子）</li>
+                        <li>模型可能复杂，并需要大量计算</li>
+                        <li>我们为我们无法控制的任何结果都设置了一个机会节点：对手或环境</li>
+                        <li>模型可能会指出对手的行动是有可能的！</li>
+                    </font>
+                </ul>
+                <font size="5">
+                    <p>暂时假设每个机会节点都带有概率，指定了其结果的分布。</p>
+                    <p>重要的一点要记住的是，仅仅因为我们分配了反映我们信念的概率给结果，并不意味着另一面就是抛硬币。</p>
+                    <p>如果认为幽灵向左走的概率是 20%，这并不意味着幽灵具有随机数生成器。这只是意味着根据模型（可能是一个简化）所得到的。</p>
+                </font>
+
+                <h2 style="position: relative;">
+                    <font size="6">演示:随机幽灵假设 - 期望最大化Pacman</font>
+                </h2>
+                <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+                    <source src="./video/video-7-1.mp4" type="video/mp4"></source>
+                </video>
+                <br>
+                <h2 style="position: relative;">
+                    <font size="6">演示:敌对幽灵假设 - 期望最大化Pacman</font>
+                </h2>
+                <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+                    <source src="./video/video-7-2.mp4" type="video/mp4"></source>
+                </video>
+            </div>
+</body>
+</html>
